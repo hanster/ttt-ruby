@@ -1,35 +1,10 @@
 require 'spec_helper'
 require 'tictactoe/game_loop'
+require 'tictactoe/mock/game'
 
 module TicTacToe
-  class TestGame
-    attr_reader :updated, :update_count, :draw_count
-    attr_accessor :running
-    
-    def initialize
-      @updated = false
-      @running = [false]
-      @update_count = 0
-      @draw_count = 0
-    end
-
-    def update
-      @updated = true
-      @update_count += 1
-    end
-
-    def running?
-      @running.shift
-    end
-
-    def draw
-      raise 'Invalid draw' if (draw_count != (update_count - 1))
-      @draw_count += 1
-    end
-  end
-
   describe GameLoop do
-    let(:game) { TestGame.new }
+    let(:game) { Mock::Game.new }
     let(:game_loop) { GameLoop.new(game) }
 
     def set_up_times_game_is_running(game, number_of_loops)
