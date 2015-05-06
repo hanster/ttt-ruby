@@ -1,5 +1,5 @@
 module TicTacToe
-  module Mock
+  module Fakes
     class Game
       attr_reader :updated, :update_count, :draw_count
       attr_accessor :running

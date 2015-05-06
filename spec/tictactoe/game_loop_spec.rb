@@ -1,10 +1,10 @@
 require 'spec_helper'
 require 'tictactoe/game_loop'
-require 'tictactoe/mock/game'
+require 'tictactoe/fakes/game'
 
 module TicTacToe
   describe GameLoop do
-    let(:game) { Mock::Game.new }
+    let(:game) { Fakes::Game.new }
     let(:game_loop) { GameLoop.new(game) }
 
     def set_up_times_game_is_running(game, number_of_loops)
