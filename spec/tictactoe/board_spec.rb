@@ -9,17 +9,17 @@ module TicTacToe
     end
 
     it "makes a move" do
-      board = Board.new().move(0)
+      board = Board.new().move(0, Marker::X_MARKER)
       expect(board.to_s).to eq('X--------')
     end
 
     it "changes turn after a move" do
-      board = Board.new().move(0).move(1)
+      board = Board.new().move(0, Marker::X_MARKER).move(1, Marker::O_MARKER)
       expect(board.to_s).to eq('XO-------')
     end
 
     it "keeps switching turns" do
-      board = Board.new().move(0).move(1).move(2)
+      board = Board.new().move(0, Marker::X_MARKER).move(1, Marker::O_MARKER).move(2, Marker::X_MARKER)
       expect(board.to_s).to eq('XOX------')
     end
 
