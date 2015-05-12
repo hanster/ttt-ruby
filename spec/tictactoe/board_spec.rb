@@ -25,12 +25,12 @@ module TicTacToe
 
     it "returns the 0 available positions" do
       board = Board.new('XXXXXXXXX')
-      expect(board.available_positions).to eq([])
+      expect(board.available_moves).to eq([])
     end
 
     it "returns the all available positions" do
       board = Board.new()
-      expect(board.available_positions).to eq([0, 1, 2, 3, 4, 5, 6, 7, 8])
+      expect(board.available_moves).to eq([0, 1, 2, 3, 4, 5, 6, 7, 8])
     end
 
     describe "#game_over?" do

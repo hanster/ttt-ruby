@@ -32,6 +32,14 @@ module TicTacToe
         ui.prompt_move_input
         expect(output.string).to start_with("Please enter your next move: ")
       end
+
+      it "keeps asking for the user to enter a move until it chooses a valid move" do
+        input = StringIO.new("a\n1\n8\n")
+        ui = ConsoleUi.new(input, output)
+        board = Board.new('XXXXXX---')
+        expect(ui.prompt_for_move(board)).to eq(8)
+        expect(output.string).to include("Cannot make that move, try again.")
+      end
     end
   end
 end

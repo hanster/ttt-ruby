@@ -23,7 +23,7 @@ module TicTacToe
       positions.join
     end
 
-    def available_positions
+    def available_moves
       positions.each_with_index.inject([]) do |avail_positions, (value, index)|
         avail_positions << index if value == Marker::EMPTY_MARKER
         avail_positions
@@ -57,7 +57,7 @@ module TicTacToe
     end
 
     def no_more_moves?
-      available_positions.count == 0
+      available_moves.count == 0
     end
   end
 end
