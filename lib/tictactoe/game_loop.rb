@@ -5,6 +5,7 @@ module TicTacToe
     end
 
     def run
+      game.draw
       while (game.running?)
         game.update
         game.draw

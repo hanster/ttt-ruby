@@ -88,5 +88,27 @@ module TicTacToe
         end
       end
     end
+
+    it "return array of the positions, either the index or if it is X or O" do
+      board = Board.new('---XXXXXX')
+      expect(board.positions_representation).to eq([0, 1, 2, 'X', 'X', 'X', 'X', 'X', 'X'])
+    end
+
+    describe "#game_over_message#" do
+      it "returns X wins message" do
+        board = Board.new('XXX------')
+        expect(board.game_over_message).to eq("Game Over\n\n#{Marker::X_MARKER} wins!")
+      end
+
+      it "returns draw message" do
+        board = Board.new('XOXOOXXXO')
+        expect(board.game_over_message).to eq("Game Over\n\nIt's a draw!")
+      end
+
+      it "returns O wins message" do
+        board = Board.new('OOO------')
+        expect(board.game_over_message).to eq("Game Over\n\n#{Marker::O_MARKER} wins!")
+      end
+    end
   end
 end

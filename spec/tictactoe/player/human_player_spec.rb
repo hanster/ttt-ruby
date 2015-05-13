@@ -23,8 +23,8 @@ module TicTacToe
   end
 
   class MockUi
-    def prompt_for_move(available_moves)
-      available_moves.sample
+    def prompt_for_move(board, marker)
+      board.available_moves.sample
     end
   end
 end
