@@ -21,7 +21,6 @@ module TicTacToe
       end
 
       def draw
-        raise 'Invalid draw' if (draw_count != (update_count - 1))
         @draw_count += 1
       end
     end

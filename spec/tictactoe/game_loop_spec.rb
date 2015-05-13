@@ -32,8 +32,8 @@ module TicTacToe
       expect(game.update_count).to eq(2)
     end
 
-    it "draws after the update" do
-      set_up_times_game_is_running(game, 1)
+    it "draws before the loop starts" do
+      set_up_times_game_is_running(game, 0)
       game_loop.run
       expect(game.draw_count).to eq(1)
     end

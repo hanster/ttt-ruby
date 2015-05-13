@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby -w
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+require 'tictactoe/ui/console_ui'
+require 'tictactoe/board'
+require 'tictactoe/player/human_player'
+require 'tictactoe/game'
+require 'tictactoe/game_loop'
+
+ui = TicTacToe::Ui::ConsoleUi.new
+board = TicTacToe::Board.new
+player_1 = TicTacToe::Player::HumanPlayer.new(ui, TicTacToe::Marker::X_MARKER)
+player_2 = TicTacToe::Player::HumanPlayer.new(ui, TicTacToe::Marker::O_MARKER)
+players = [player_1, player_2]
+
+game = TicTacToe::Game.new(board, players, ui)
+game_loop = TicTacToe::GameLoop.new(game)
+game_loop.run

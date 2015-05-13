@@ -9,7 +9,7 @@ module TicTacToe
       end
 
       def next_move(board)
-        @ui.prompt_for_move(board.available_moves)
+        @ui.prompt_for_move(board, @marker)
       end
     end
   end
