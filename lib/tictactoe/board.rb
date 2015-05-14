@@ -26,11 +26,6 @@ module TicTacToe
     end
 
     def available_moves
-      positions.each_with_index.inject([]) do |avail_positions, (value, index)|
-        avail_positions << index if value == EMPTY_MARKER
-        avail_positions
-      end
-
       positions_with_mark(EMPTY_MARKER)
     end
 
@@ -40,10 +35,9 @@ module TicTacToe
 
     def has_won?(marker)
       marker_positions = positions_with_mark(marker)
-      ALL_WIN_CASES.each do |win_case|
-        return true if (win_case - marker_positions).empty?
+      ALL_WIN_CASES.any? do |win_case|
+        (win_case - marker_positions).empty?
       end
-      false
     end
 
     def positions_representation

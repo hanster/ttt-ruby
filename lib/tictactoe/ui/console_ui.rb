@@ -39,7 +39,7 @@ module TicTacToe
       end
 
       def clear_screen
-        @output.puts(ANSI_CLS + ANSI_HOME)
+        @output.print(ANSI_CLS + ANSI_HOME)
       end
 
       private

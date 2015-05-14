@@ -1,7 +1,7 @@
 module TicTacToe
   module Player
     class HumanPlayer
-      attr_accessor :marker
+      attr_reader :marker
 
       def initialize(ui, marker)
         @ui = ui

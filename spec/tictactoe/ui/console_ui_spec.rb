@@ -7,7 +7,7 @@ module TicTacToe
     describe ConsoleUi do
       let(:output) { StringIO.new }
       let(:marker) { Marker::X_MARKER }
-                 
+
       it "displays a given message to console" do
         input = StringIO.new
         ui = ConsoleUi.new(input, output)
@@ -49,10 +49,10 @@ module TicTacToe
         ui = ConsoleUi.new(input, output)
         ui.draw_board(board)
         expect(output.string).to include("  0  |  1  |  2  \n" +
-                                        "-----+-----+-----\n" +
-                                        "  3  |  4  |  5  \n" +
-                                        "-----+-----+-----\n" +
-                                        "  6  |  7  |  8  \n")
+                                         "-----+-----+-----\n" +
+                                         "  3  |  4  |  5  \n" +
+                                         "-----+-----+-----\n" +
+                                         "  6  |  7  |  8  \n")
       end
 
       it "clears the screen" do
@@ -60,7 +60,12 @@ module TicTacToe
         ui = ConsoleUi.new(input, output)
         ui.clear_screen
         expect(output.string).to include("\u001b[2J" + "\u001b[H")
-       end
+      end
+
+      it "prompts for the game type until a valid input is entered" do
+        input = StringIO.new("a\n5\n2\n")
+        ui = ConsoleUi.new(input, output)
+      end
     end
   end
 end
