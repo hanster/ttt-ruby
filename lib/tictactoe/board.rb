@@ -4,6 +4,7 @@ module TicTacToe
   class Board
     include Marker
 
+    # BOARD_DIM concept not used in the win cases? (Inconsistency?)
     BOARD_DIM = 3
     BOARD_SIZE = BOARD_DIM * BOARD_DIM
     VERTICAL_WIN_CASES = [[0, 3, 6], [1, 4, 7], [2, 5, 8]]
@@ -21,6 +22,7 @@ module TicTacToe
       Board.new(new_positions)
     end
 
+    # Shouldn't override to_s
     def to_s
       positions.join
     end
@@ -36,6 +38,7 @@ module TicTacToe
     def has_won?(marker)
       marker_positions = positions_with_mark(marker)
       ALL_WIN_CASES.any? do |win_case|
+        # Code at Wrong Level of Abstraction? - move out to separate method to describe what it does?
         (win_case - marker_positions).empty?
       end
     end
@@ -48,6 +51,8 @@ module TicTacToe
 
     def game_over_message
       message = ''
+      # Prefer Polymorphism to If/Else
+      # Misplaced responsibility?
       if (has_won?(O_MARKER))
         message = O_MARKER + ' wins!'
       elsif (has_won?(X_MARKER))

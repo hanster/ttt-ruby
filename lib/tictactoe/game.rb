@@ -9,6 +9,7 @@ module TicTacToe
     def initialize(board, players, ui = Ui::ConsoleUi.new)
       @board = board
       @players = players
+      # Code at wrong level of abstraction? current_player should be the player object
       @current_player = PLAYER_1
       @ui = ui
     end

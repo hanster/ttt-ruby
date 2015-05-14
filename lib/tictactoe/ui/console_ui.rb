@@ -1,6 +1,8 @@
 module TicTacToe
   module Ui
     class ConsoleUi
+      #SRP rule, split out the output and input to separate classes?
+
       ENTER_MOVE_PROMPT = "Player %s, Please enter your next move: "
       CANNOT_MAKE_MOVE_PROMPT = "Cannot make that move, try again."
       BOARD_TEMPLATE = 
@@ -27,6 +29,8 @@ module TicTacToe
         value[/^[0-8]$/] && value.to_i
       end
 
+      # Functions should do one thing
+      # This keeps looping until an input is valid. Maybe move handling this up a level?
       def prompt_for_move(board, marker)
         move = prompt_move_input(marker)
         return move if valid_move?(board, move)
