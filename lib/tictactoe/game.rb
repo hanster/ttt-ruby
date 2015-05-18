@@ -1,4 +1,3 @@
-require 'tictactoe/player/human_player'
 require 'tictactoe/ui/console_ui'
 
 module TicTacToe

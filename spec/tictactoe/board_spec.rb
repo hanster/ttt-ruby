@@ -109,6 +109,11 @@ module TicTacToe
         board = Board.new('OOO------')
         expect(board.game_over_message).to eq("Game Over\n\n#{Marker::O_MARKER} wins!")
       end
+
+      it "returns true when the board has no winner and no moves" do
+        board = Board.new('XOXOOXXXO')
+        expect(board.is_draw?).to be true
+      end
     end
   end
 end

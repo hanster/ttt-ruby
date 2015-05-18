@@ -58,6 +58,10 @@ module TicTacToe
       "Game Over\n\n" + message
     end
 
+    def is_draw?
+      !has_anyone_won? && no_more_moves?
+    end
+
     private
 
     attr_accessor :positions, :turn
