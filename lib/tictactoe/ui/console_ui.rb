@@ -18,6 +18,7 @@ module TicTacToe
         "  %s  |  %s  |  %s  \n\n"
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
+      INDEX_OFFSET = 1
 
       # SRP - validation
 
@@ -33,18 +34,20 @@ module TicTacToe
       def prompt_move_input(marker)
         display_message(ENTER_MOVE_PROMPT % marker)
         value = @input.gets
-        value[/^[0-8]$/] && value.to_i
+        value[/^[1-9]$/] && value.to_i
       end
 
       def prompt_for_move(board, marker)
         move = prompt_move_input(marker)
+        move = move - INDEX_OFFSET if move
         return move if valid_move?(board, move)
         display_message(CANNOT_MAKE_MOVE_PROMPT)
         self.prompt_for_move(board, marker)
       end
 
       def draw_board(board)
-        display_message(BOARD_TEMPLATE % board.positions_representation)
+        board_positions = offset_indices(board.positions_representation)
+        display_message(BOARD_TEMPLATE % board_positions)
       end
 
       def clear_screen
@@ -75,6 +78,12 @@ module TicTacToe
 
       def valid_move?(board, move)
         board.available_moves.include?(move)
+      end
+
+      def offset_indices(board_positions)
+        board_positions.map do |position|
+          position.is_a?(Integer) ? position + INDEX_OFFSET : position
+        end
       end
     end
   end

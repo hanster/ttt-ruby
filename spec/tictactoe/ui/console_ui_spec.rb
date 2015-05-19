@@ -16,10 +16,10 @@ module TicTacToe
       end
 
       it "takes in user input, which represents a move" do
-        input = StringIO.new("0\n")
+        input = StringIO.new("1\n")
         ui = ConsoleUi.new(input, output)
         user_input = ui.prompt_move_input(marker)
-        expect(user_input).to eq(0)
+        expect(user_input).to eq(1)
       end
 
       it "returns false when an move input is not 0-8" do
@@ -29,7 +29,7 @@ module TicTacToe
       end
 
       it "asks the user to enter a move" do
-        input = StringIO.new("0\n")
+        input = StringIO.new("1\n")
         ui = ConsoleUi.new(input, output)
         ui.prompt_move_input(marker)
         expect(output.string).to start_with("Player #{marker}, Please enter your next move: ")
@@ -39,7 +39,7 @@ module TicTacToe
         input = StringIO.new("a\n1\n8\n")
         ui = ConsoleUi.new(input, output)
         board = Board.initial_board('XXXXXX---')
-        expect(ui.prompt_for_move(board, marker)).to eq(8)
+        expect(ui.prompt_for_move(board, marker)).to eq(7)
         expect(output.string).to include("Cannot make that move, try again.")
       end
 
@@ -48,11 +48,11 @@ module TicTacToe
         input = StringIO.new
         ui = ConsoleUi.new(input, output)
         ui.draw_board(board)
-        expect(output.string).to include("  0  |  1  |  2  \n" +
+        expect(output.string).to include("  1  |  2  |  3  \n" +
                                          "-----+-----+-----\n" +
-                                         "  3  |  4  |  5  \n" +
+                                         "  4  |  5  |  6  \n" +
                                          "-----+-----+-----\n" +
-                                         "  6  |  7  |  8  \n")
+                                         "  7  |  8  |  9  \n")
       end
 
       it "clears the screen" do
