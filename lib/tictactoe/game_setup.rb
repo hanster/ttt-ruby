@@ -26,6 +26,7 @@ module TicTacToe
       @ui.display_message(GAME_TYPES_PROMPT)
       players = []
 
+      # polymorphism? generalise somehow
       case @ui.prompt_game_type
       when HVH_GAME_TYPE
         players = [human_player(X_MARKER), human_player(O_MARKER)]
