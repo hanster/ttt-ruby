@@ -38,7 +38,7 @@ module TicTacToe
       it "keeps asking for the user to enter a move until it chooses a valid move" do
         input = StringIO.new("a\n1\n8\n")
         ui = ConsoleUi.new(input, output)
-        board = Board.new('XXXXXX---')
+        board = Board.initial_board('XXXXXX---')
         expect(ui.prompt_for_move(board, marker)).to eq(8)
         expect(output.string).to include("Cannot make that move, try again.")
       end
@@ -65,6 +65,26 @@ module TicTacToe
       it "prompts for the game type until a valid input is entered" do
         input = StringIO.new("a\n5\n2\n")
         ui = ConsoleUi.new(input, output)
+
+        expect(ui.prompt_game_type).to be(2)
+        expect(output.string).to include("Enter the game type: ")
+        expect(output.string).to include("Invalid game type.")
+      end
+
+      it "prompts to play again" do
+        input = StringIO.new("a\n3\ny\n")
+        ui = ConsoleUi.new(input, output)
+
+        expect(ui.prompt_play_again?).to be true
+        expect(output.string).to include("Do you want to play again?")
+        expect(output.string).to include("Invalid input (y/n)")
+      end
+
+      it "returns false when the user enters n for the play again prompt" do
+        input = StringIO.new("n\n")
+        ui = ConsoleUi.new(input, output)
+
+        expect(ui.prompt_play_again?).to be false
       end
     end
   end

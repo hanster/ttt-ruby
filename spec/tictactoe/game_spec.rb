@@ -1,21 +1,22 @@
 require 'spec_helper'
 require 'tictactoe/game'
+require 'tictactoe/fakes/ui_mock'
 
 module TicTacToe
   describe Game do
     let(:player_1) { PlayerSpy.new }
     let(:player_2) { PlayerSpy.new }
     let(:players) { [player_1, player_2] }
-    let(:ui) { UiSpy.new }
+    let(:ui) { Fakes::UiMock.new }
 
     it "is running when you have a new game" do
       board = Board.new
       game = Game.new(board, players)
       expect(game.running?).to be true
     end
-    
+
     it "is not running when the board is full" do
-      board = Board.new('XXXOOOXXX')
+      board = Board.initial_board('XXXOOOXXX')
       game = Game.new(board, players)
       expect(game.running?).to be false
     end
@@ -57,9 +58,9 @@ module TicTacToe
     end
 
     it "displays the game over message if the game is no longer running" do
-      board = Board.new('XXXOOOXXX')
+      board = Board.initial_board('XXXOOOXXX')
       game = Game.new(board, players, ui)
-      
+
       game.draw
       expect(ui.display_message_times_called).to eq(1)
     end
@@ -78,25 +79,4 @@ module TicTacToe
     end
   end
 
-  class UiSpy
-    attr_reader :draw_board_times_called, :clear_screen_times_called, :display_message_times_called
-
-    def initialize
-      @draw_board_times_called = 0
-      @clear_screen_times_called = 0
-      @display_message_times_called = 0
-    end
-
-    def draw_board(board)
-      @draw_board_times_called += 1
-    end
-
-    def clear_screen
-      @clear_screen_times_called += 1
-    end
-
-    def display_message(message)
-      @display_message_times_called += 1
-    end
-  end
 end

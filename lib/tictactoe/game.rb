@@ -1,4 +1,3 @@
-require 'tictactoe/player/human_player'
 require 'tictactoe/ui/console_ui'
 
 module TicTacToe
@@ -6,10 +5,12 @@ module TicTacToe
     PLAYER_1 = 0
     PLAYER_2 = 1
 
+    attr_reader :players
+
     def initialize(board, players, ui = Ui::ConsoleUi.new)
       @board = board
       @players = players
-      @current_player = PLAYER_1
+      @current_player = @players[PLAYER_1]
       @ui = ui
     end
 
@@ -31,12 +32,12 @@ module TicTacToe
     private
 
     def make_player_move
-      move = @players[@current_player].next_move(@board)
-      @board = @board.move(move, @players[@current_player].marker)
+      move = @current_player.next_move(@board)
+      @board = @board.move(move, @current_player.marker)
     end
 
     def switch_current_player
-      @current_player = @current_player == PLAYER_1 ? PLAYER_2 : PLAYER_1
+      @current_player = @current_player == @players[PLAYER_1] ? @players[PLAYER_2] : @players[PLAYER_1]
     end
   end
 end

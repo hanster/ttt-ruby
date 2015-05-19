@@ -1,19 +1,22 @@
 require 'spec_helper'
 require 'tictactoe/player/human_player'
 require 'tictactoe/board'
+require 'tictactoe/marker'
 
 module TicTacToe
   module Player
+    include Marker
+
     describe HumanPlayer do
       let(:board) { Board.new }
       let(:ui) { MockUi.new }
-      let(:player) { HumanPlayer.new(ui, Marker::X_MARKER) }
+      let(:player) { HumanPlayer.new(ui, X_MARKER) }
       it "takes in a UI class and the players marker (X, or O) on initialization" do
         ui = ui
       end
 
       it "has a set marker after initialization" do
-        expect(player.marker).to eq(Marker::X_MARKER)
+        expect(player.marker).to eq(X_MARKER)
       end
 
       it "makes attempts to make a move by asking for input" do
