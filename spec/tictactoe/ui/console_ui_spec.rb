@@ -86,6 +86,14 @@ module TicTacToe
 
         expect(ui.prompt_play_again?).to be false
       end
+
+      it "displays the goodbye messsage" do
+        input = StringIO.new
+        ui = ConsoleUi.new(input, output)
+        ui.prompt_good_bye
+
+        expect(output.string).to include("Goodbye and Thanks for playing!")
+      end
     end
   end
 end

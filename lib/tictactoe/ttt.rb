@@ -17,6 +17,7 @@ module TicTacToe
         GameLoop.new(game).run
         break unless @ui.prompt_play_again?
       end
+      @ui.prompt_good_bye
     end
   end
 end

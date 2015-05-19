@@ -112,7 +112,7 @@ module TicTacToe
 
       it "returns true when the board has no winner and no moves" do
         board = Board.initial_board('XOXOOXXXO')
-        expect(board.is_draw?).to be true
+        expect(board.draw?).to be true
       end
     end
   end

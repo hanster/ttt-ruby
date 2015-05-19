@@ -6,6 +6,8 @@ module TicTacToe
 
     BOARD_DIM = 3
     BOARD_SIZE = BOARD_DIM * BOARD_DIM
+    # use dim to calculate the win cases, but don't want to calculate them dynamically each time as we 
+    # create a new board with each move
     VERTICAL_WIN_CASES = [[0, 3, 6], [1, 4, 7], [2, 5, 8]]
     HORIZONAL_WIN_CASES = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
     DIAGONAL_WIN_CASES = [[0, 4, 8], [2, 4, 6]]
@@ -41,7 +43,7 @@ module TicTacToe
     def has_won?(marker)
       marker_positions = positions_with_mark(marker)
       ALL_WIN_CASES.any? do |win_case|
-        (win_case - marker_positions).empty?
+        all_positions_in_win_case_have_marker?(win_case, marker_positions)
       end
     end
 
@@ -63,7 +65,7 @@ module TicTacToe
       "Game Over\n\n" + message
     end
 
-    def is_draw?
+    def draw?
       no_more_moves? && !has_anyone_won?
     end
 
@@ -75,6 +77,10 @@ module TicTacToe
 
     attr_accessor :positions, :turn
 
+    def all_positions_in_win_case_have_marker?(win_case, marker_positions)
+      (win_case - marker_positions).empty?
+    end
+
     def position_representation(index)
       return index if positions[index] == EMPTY_MARKER
       positions[index]
@@ -84,11 +90,12 @@ module TicTacToe
       positions.each_index.select { |index| positions[index] == marker }
     end
 
+    # duplicate code for has_won? but it checks bother markers at the same time for performance gains
     def has_anyone_won?
       x_marker_positions = positions_with_mark(X_MARKER)
       o_marker_positions = positions_with_mark(O_MARKER)
       ALL_WIN_CASES.any? do |win_case|
-        (win_case - x_marker_positions).empty? || (win_case - o_marker_positions).empty?
+        all_positions_in_win_case_have_marker?(win_case, x_marker_positions) || all_positions_in_win_case_have_marker?(win_case, o_marker_positions)
       end
     end
 

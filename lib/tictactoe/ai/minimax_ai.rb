@@ -33,7 +33,7 @@ module TicTacToe
       def score(board, marker, move, alpha = DEFAULT_ALPHA, beta = DEFAULT_BETA)
         next_board = board.move(move, marker)
         return MINIMAX_MAX_VALUE if next_board.has_won?(marker)
-        return MINIMAX_DRAW_VALUE if next_board.is_draw?
+        return MINIMAX_DRAW_VALUE if next_board.draw?
 
         next_marker = opponent(marker)
         next_move = calculate_next_move(next_board, next_marker, -beta, -alpha)

@@ -7,6 +7,7 @@ module TicTacToe
       INVALID_GAME_TYPE_PROMPT = "Invalid game type."
       PLAY_AGAIN_PROMPT = "Do you want to play again?"
       INVALID_PLAY_AGAIN_PROMPT = "Invalid input (y/n)"
+      GOODBYE_MESSAGE = "Goodbye and Thanks for playing!"
       YES_INPUT = 'y'
       NO_INPUT = 'n'
       BOARD_TEMPLATE = 
@@ -21,6 +22,9 @@ module TicTacToe
       INDEX_OFFSET = 1
 
       # SRP - validation
+      # prompt for new game
+      # prompt for game types
+      # prompt for moves and the displaying of the board
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
@@ -72,6 +76,10 @@ module TicTacToe
         end
         display_message(INVALID_PLAY_AGAIN_PROMPT)
         self.prompt_play_again?
+      end
+
+      def prompt_good_bye
+        display_message(GOODBYE_MESSAGE)
       end
 
       private

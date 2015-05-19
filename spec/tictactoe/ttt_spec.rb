@@ -22,6 +22,12 @@ module TicTacToe
       expect(game_setup.choose_game_type_times_called).to eq(2)
       expect(ui.prompt_play_again_times_called).to eq(2)
     end
+
+    it "says goodbye at the end" do
+      ttt = TTT.new(ui, game_setup)
+      ttt.run
+      expect(ui.prompt_good_bye_times_called).to eq(1)
+    end
   end
 
   module Fakes
