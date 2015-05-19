@@ -14,9 +14,9 @@ module TicTacToe
       game = Game.new(board, players)
       expect(game.running?).to be true
     end
-    
+
     it "is not running when the board is full" do
-      board = Board.new('XXXOOOXXX')
+      board = Board.initial_board('XXXOOOXXX')
       game = Game.new(board, players)
       expect(game.running?).to be false
     end
@@ -58,9 +58,9 @@ module TicTacToe
     end
 
     it "displays the game over message if the game is no longer running" do
-      board = Board.new('XXXOOOXXX')
+      board = Board.initial_board('XXXOOOXXX')
       game = Game.new(board, players, ui)
-      
+
       game.draw
       expect(ui.display_message_times_called).to eq(1)
     end

@@ -10,18 +10,23 @@ module TicTacToe
     HORIZONAL_WIN_CASES = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
     DIAGONAL_WIN_CASES = [[0, 4, 8], [2, 4, 6]]
     ALL_WIN_CASES = VERTICAL_WIN_CASES + HORIZONAL_WIN_CASES + DIAGONAL_WIN_CASES
+    CORNERS = [0, 2, 6, 8]
 
-    def initialize(initial_positions = EMPTY_MARKER * BOARD_SIZE)
-      @positions = initial_positions.split('')
+    def self.initial_board(layout)
+      Board.new(layout.split(''))
+    end
+
+    def initialize(initial_positions = (EMPTY_MARKER * BOARD_SIZE).split(''))
+      @positions = initial_positions
     end
 
     def move(position, marker)
-      new_positions = self.to_s
+      new_positions = positions.dup
       new_positions[position] = marker
       Board.new(new_positions)
     end
 
-    def to_s
+    def string_positions
       positions.join
     end
 
@@ -59,7 +64,11 @@ module TicTacToe
     end
 
     def is_draw?
-      !has_anyone_won? && no_more_moves?
+      no_more_moves? && !has_anyone_won?
+    end
+
+    def random_corner_move
+      CORNERS.sample
     end
 
     private
@@ -76,7 +85,11 @@ module TicTacToe
     end
 
     def has_anyone_won?
-      has_won?(X_MARKER) || has_won?(O_MARKER)
+      x_marker_positions = positions_with_mark(X_MARKER)
+      o_marker_positions = positions_with_mark(O_MARKER)
+      ALL_WIN_CASES.any? do |win_case|
+        (win_case - x_marker_positions).empty? || (win_case - o_marker_positions).empty?
+      end
     end
 
     def no_more_moves?

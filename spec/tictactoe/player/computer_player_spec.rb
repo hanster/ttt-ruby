@@ -14,7 +14,7 @@ module TicTacToe
       end
 
       it "returns a valid board move" do
-        board = Board.new('-OOOXXXOO')
+        board = Board.initial_board('-OOOXXXOO')
         expect(player.next_move(board)).to eq(0)
       end
     end
