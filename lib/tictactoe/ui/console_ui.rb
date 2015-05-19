@@ -19,6 +19,8 @@ module TicTacToe
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
 
+      # SRP - validation
+
       def initialize(input = STDIN, output = STDOUT)
         @input = input
         @output = output
