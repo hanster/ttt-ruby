@@ -3,10 +3,12 @@ require 'tictactoe/ui/console_ui'
 module TicTacToe
   class Game
     PLAYER_1 = 0
+
     PLAYER_2 = 1
 
     attr_reader :players
 
+    #ui naming display /console?
     def initialize(board, players, ui = Ui::ConsoleUi.new)
       @board = board
       @players = players
@@ -22,11 +24,24 @@ module TicTacToe
     def draw
       @ui.clear_screen
       @ui.draw_board(@board)
-      @ui.display_message(@board.game_over_message) if !running?
+      @ui.display_message(@board.game_over_message) if game_over?
     end
 
     def running?
       !@board.game_over?
+    end
+
+    def game_over?
+      @board.game_over?
+    end
+
+    #run / loop
+    def run
+      draw
+      until game_over?
+        update
+        draw
+      end
     end
 
     private

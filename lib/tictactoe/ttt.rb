@@ -1,5 +1,4 @@
 require 'tictactoe/game_setup'
-require 'tictactoe/game_loop'
 require 'tictactoe/ui/console_ui'
 require 'tictactoe/player/computer_player'
 require 'tictactoe/ai/minimax_ai'
@@ -14,7 +13,7 @@ module TicTacToe
     def run
       loop do
         game = @game_setup.choose_game_type
-        GameLoop.new(game).run
+        game.run
         break unless @ui.prompt_play_again?
       end
       @ui.prompt_good_bye

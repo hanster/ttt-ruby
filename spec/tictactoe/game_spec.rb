@@ -64,6 +64,12 @@ module TicTacToe
       game.draw
       expect(ui.display_message_times_called).to eq(1)
     end
+
+    it "exits the run method once the game is over" do
+      board = Board.initial_board('XOXOXOOX-')
+      game = Game.new(board, players, ui)
+      game.run
+    end
   end
 
   class PlayerSpy
@@ -75,8 +81,8 @@ module TicTacToe
     end
 
     def next_move(board)
+      board.available_moves.sample
       @next_move_times_called += 1
     end
   end
-
 end

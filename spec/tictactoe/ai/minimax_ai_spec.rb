@@ -52,11 +52,6 @@ module TicTacToe
 
         expect(minimax.score(board, o_marker, move)).to eq(100)
       end
-
-      it "moves to a corner for the first move" do
-        board = Board.new
-        expect(Board::CORNERS).to include(minimax.calculate_next_move(board, x_marker))
-      end
     end
   end
 end

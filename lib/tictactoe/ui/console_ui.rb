@@ -58,25 +58,31 @@ module TicTacToe
         @output.print(ANSI_CLS + ANSI_HOME)
       end
 
+      # outside loop not recursion
+      # #same level of abstraction
       def prompt_game_type(options)
+        #one level
         display_message(options)
         display_message(ENTER_GAME_TYPE_PROMPT)
+        #another level
         value = @input.gets
         value = value[/^[1-4]$/] && value.to_i
         return value if value
+        #
         display_message(INVALID_GAME_TYPE_PROMPT)
         self.prompt_game_type(options)
       end
 
+      #returns in the middle are a smell
       def prompt_play_again?
         display_message(PLAY_AGAIN_PROMPT)
         value = @input.gets.chomp
         if value == YES_INPUT|| value == NO_INPUT
-          return true if value == YES_INPUT
-          return false
+          value == YES_INPUT
+        else
+          display_message(INVALID_PLAY_AGAIN_PROMPT)
+          self.prompt_play_again?
         end
-        display_message(INVALID_PLAY_AGAIN_PROMPT)
-        self.prompt_play_again?
       end
 
       def prompt_good_bye
@@ -94,6 +100,8 @@ module TicTacToe
           position.is_a?(Integer) ? position + INDEX_OFFSET : position
         end
       end
+
+      # interact with board 
     end
   end
 end

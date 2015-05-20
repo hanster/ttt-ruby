@@ -11,9 +11,6 @@ module TicTacToe
       DEFAULT_BETA = 100
 
       def calculate_next_move(board, marker, alpha = DEFAULT_ALPHA, beta = DEFAULT_BETA)
-        # any corner move is condsidered the best first move
-        # http://blog.ostermiller.org/tic-tac-toe-strategy
-        return board.random_corner_move if first_move(board)
         minimax_value = MINIMAX_STARTING_VALUE
         best_move = :NO_BEST_MOVE
 
@@ -30,6 +27,7 @@ module TicTacToe
         return best_move
       end
 
+      #don't test this as it locks in the implementation
       def score(board, marker, move, alpha = DEFAULT_ALPHA, beta = DEFAULT_BETA)
         next_board = board.move(move, marker)
         return MINIMAX_MAX_VALUE if next_board.has_won?(marker)
@@ -38,12 +36,6 @@ module TicTacToe
         next_marker = opponent(marker)
         next_move = calculate_next_move(next_board, next_marker, -beta, -alpha)
         return -score(next_board, next_marker, next_move, alpha, beta)
-      end
-
-      private
-
-      def first_move(board)
-        board.available_moves.count == 9
       end
     end
   end

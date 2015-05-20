@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tictactoe/ttt'
+require 'tictactoe/fakes/game'
 
 module TicTacToe
   describe TTT do

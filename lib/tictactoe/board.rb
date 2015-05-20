@@ -53,6 +53,7 @@ module TicTacToe
       end
     end
 
+    #ask for winner and display in ui
     def game_over_message
       message = ''
       if (has_won?(O_MARKER))
@@ -67,10 +68,6 @@ module TicTacToe
 
     def draw?
       no_more_moves? && !has_anyone_won?
-    end
-
-    def random_corner_move
-      CORNERS.sample
     end
 
     private
