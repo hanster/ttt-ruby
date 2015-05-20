@@ -5,7 +5,8 @@ module TicTacToe
         :clear_screen_times_called,
         :display_message_times_called,
         :prompt_play_again_times_called,
-        :prompt_good_bye_times_called
+        :prompt_good_bye_times_called,
+        :prompt_game_type_times_called
       attr_accessor :game_type_input, :play_again_answers
 
       def initialize
@@ -14,6 +15,7 @@ module TicTacToe
         @display_message_times_called = 0
         @prompt_play_again_times_called = 0
         @prompt_good_bye_times_called = 0
+        @prompt_game_type_times_called = 0
         @play_again_answers = [false]
       end
 
@@ -29,7 +31,8 @@ module TicTacToe
         @display_message_times_called += 1
       end
 
-      def prompt_game_type
+      def prompt_game_type(options)
+        @prompt_game_type_times_called += 1
         @game_type_input
       end
 

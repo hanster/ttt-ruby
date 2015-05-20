@@ -66,7 +66,7 @@ module TicTacToe
         input = StringIO.new("a\n5\n2\n")
         ui = ConsoleUi.new(input, output)
 
-        expect(ui.prompt_game_type).to be(2)
+        expect(ui.prompt_game_type("options")).to be(2)
         expect(output.string).to include("Enter the game type: ")
         expect(output.string).to include("Invalid game type.")
       end

@@ -58,13 +58,14 @@ module TicTacToe
         @output.print(ANSI_CLS + ANSI_HOME)
       end
 
-      def prompt_game_type
+      def prompt_game_type(options)
+        display_message(options)
         display_message(ENTER_GAME_TYPE_PROMPT)
         value = @input.gets
         value = value[/^[1-4]$/] && value.to_i
         return value if value
         display_message(INVALID_GAME_TYPE_PROMPT)
-        self.prompt_game_type
+        self.prompt_game_type(options)
       end
 
       def prompt_play_again?

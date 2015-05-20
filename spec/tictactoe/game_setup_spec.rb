@@ -46,9 +46,9 @@ module TicTacToe
       expect_players_to_be(game.players, computer_player, computer_player)
     end
 
-    it "displays the game types to the user" do
+    it "prompts the game types to the user" do
       game = game_setup.choose_game_type
-      expect(ui.display_message_times_called).to eq(1)
+      expect(ui.prompt_game_type_times_called).to eq(1)
     end
 
   end
