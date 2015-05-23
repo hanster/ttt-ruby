@@ -35,7 +35,6 @@ module TicTacToe
       @board.game_over?
     end
 
-    #run / loop
     def run
       draw
       until game_over?

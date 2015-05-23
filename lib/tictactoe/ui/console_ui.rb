@@ -10,13 +10,6 @@ module TicTacToe
       GOODBYE_MESSAGE = "Goodbye and Thanks for playing!"
       YES_INPUT = 'y'
       NO_INPUT = 'n'
-      BOARD_TEMPLATE = 
-        "\n" +
-        "  %s  |  %s  |  %s  \n" +
-        "-----+-----+-----\n" +
-        "  %s  |  %s  |  %s  \n" +
-        "-----+-----+-----\n" +
-        "  %s  |  %s  |  %s  \n\n"
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
       INDEX_OFFSET = 1
@@ -35,23 +28,31 @@ module TicTacToe
         @output.puts message
       end
 
-      def prompt_move_input(marker)
-        display_message(ENTER_MOVE_PROMPT % marker)
-        value = @input.gets
-        value[/^[1-9]$/] && value.to_i
+      def prompt_for_move(board, marker)
+        loop do
+          move = prompt_move_input(marker)
+          return move if valid_move?(board, move)
+          display_message(CANNOT_MAKE_MOVE_PROMPT)
+        end
       end
 
-      def prompt_for_move(board, marker)
-        move = prompt_move_input(marker)
-        move = move - INDEX_OFFSET if move
-        return move if valid_move?(board, move)
-        display_message(CANNOT_MAKE_MOVE_PROMPT)
-        self.prompt_for_move(board, marker)
+      def prompt_move_input(marker)
+        display_message(ENTER_MOVE_PROMPT % marker)
+        convert_input_to_move(@input.gets)
+      end
+
+      def valid_move?(board, move)
+        move && board.move_available?(move)
+      end
+
+      def convert_input_to_move(value)
+        value = value[/^([1-9]|1[0-6])$/] && value.to_i
+        value - INDEX_OFFSET if value
       end
 
       def draw_board(board)
         board_positions = offset_indices(board.positions_representation)
-        display_message(BOARD_TEMPLATE % board_positions)
+        display_message(board.get_template % board_positions)
       end
 
       def clear_screen
@@ -61,16 +62,28 @@ module TicTacToe
       # outside loop not recursion
       # #same level of abstraction
       def prompt_game_type(options)
-        #one level
-        display_message(options)
-        display_message(ENTER_GAME_TYPE_PROMPT)
-        #another level
-        value = @input.gets
-        value = value[/^[1-4]$/] && value.to_i
-        return value if value
-        #
-        display_message(INVALID_GAME_TYPE_PROMPT)
-        self.prompt_game_type(options)
+        loop do
+          input_value = prompt_game_type_input(options)
+          value = convert_input_to_game_type(input_value)
+          return value if valid_game_type?(value)
+          display_message(INVALID_GAME_TYPE_PROMPT)
+        end
+      end
+
+      def prompt_game_type_input(options)
+          #one level
+          display_message(options)
+          display_message(ENTER_GAME_TYPE_PROMPT)
+          #another level
+          @input.gets
+      end
+
+      def convert_input_to_game_type(value)
+        value[/^[1-4]$/] && value.to_i
+      end
+
+      def valid_game_type?(game_type_input)
+          game_type_input
       end
 
       #returns in the middle are a smell
@@ -90,10 +103,6 @@ module TicTacToe
       end
 
       private
-
-      def valid_move?(board, move)
-        board.available_moves.include?(move)
-      end
 
       def offset_indices(board_positions)
         board_positions.map do |position|

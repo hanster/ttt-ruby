@@ -2,6 +2,7 @@ require 'tictactoe/marker'
 require 'tictactoe/player/human_player'
 require 'tictactoe/game'
 require 'tictactoe/board'
+require 'tictactoe/board_four'
 
 module TicTacToe
   class GameSetup
@@ -39,7 +40,7 @@ module TicTacToe
         players = [human_player(X_MARKER), human_player(O_MARKER)]
       end
 
-      Game.new(Board.new, players, @ui)
+      Game.new(BoardFour.new, players, @ui)
     end
 
     private
