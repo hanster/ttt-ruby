@@ -16,13 +16,6 @@ module TicTacToe
         expect(output.string).to start_with("test message")
       end
 
-      it "asks the user to enter a move" do
-        input = StringIO.new("1\n")
-        ui = ConsoleUi.new(input, output)
-        ui.prompt_move_input(marker)
-        expect(output.string).to start_with("Player #{marker}, Please enter your next move: ")
-      end
-
       it "keeps asking for the user to enter a move until it chooses a valid move" do
         input = StringIO.new("a\n1\n8\n")
         ui = ConsoleUi.new(input, output)
@@ -57,6 +50,15 @@ module TicTacToe
         expect(ui.prompt_game_type("options")).to be(2)
         expect(output.string).to include("Enter the game type: ")
         expect(output.string).to include("Invalid game type.")
+      end
+
+      it "prompts for the board type until a valid input is entered" do
+        input = StringIO.new("a\n5\n1\n")
+        ui = ConsoleUi.new(input, output)
+
+        expect(ui.prompt_board_type('options')).to be(1)
+        expect(output.string).to include("Enter board type: ")
+        expect(output.string).to include("Invalid board type.")
       end
 
       it "prompts to play again" do

@@ -1,15 +1,12 @@
+require 'tictactoe/ui/input_move'
+require 'tictactoe/ui/input_board'
+require 'tictactoe/ui/input_new_game'
+require 'tictactoe/ui/input_game_type'
+
 module TicTacToe
   module Ui
     class ConsoleUi
-      ENTER_MOVE_PROMPT = "Player %s, Please enter your next move: "
-      CANNOT_MAKE_MOVE_PROMPT = "Cannot make that move, try again."
-      ENTER_GAME_TYPE_PROMPT = "Enter the game type: "
-      INVALID_GAME_TYPE_PROMPT = "Invalid game type."
-      PLAY_AGAIN_PROMPT = "Do you want to play again?"
-      INVALID_PLAY_AGAIN_PROMPT = "Invalid input (y/n)"
       GOODBYE_MESSAGE = "Goodbye and Thanks for playing!"
-      YES_INPUT = 'y'
-      NO_INPUT = 'n'
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
       INDEX_OFFSET = 1
@@ -18,6 +15,7 @@ module TicTacToe
       # prompt for new game
       # prompt for game types
       # prompt for moves and the displaying of the board
+      # prompt for board type
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
@@ -29,25 +27,13 @@ module TicTacToe
       end
 
       def prompt_for_move(board, marker)
+        input_move = InputMove.new(@input, marker)
         loop do
-          move = prompt_move_input(marker)
-          return move if valid_move?(board, move)
-          display_message(CANNOT_MAKE_MOVE_PROMPT)
+          display_message(input_move.prompt_message)
+          input_move.parse_input
+          return input_move.value if input_move.valid?(board)
+          display_message(input_move.invalid_message)
         end
-      end
-
-      def prompt_move_input(marker)
-        display_message(ENTER_MOVE_PROMPT % marker)
-        convert_input_to_move(@input.gets)
-      end
-
-      def valid_move?(board, move)
-        move && board.move_available?(move)
-      end
-
-      def convert_input_to_move(value)
-        value = value[/^([1-9]|1[0-6])$/] && value.to_i
-        value - INDEX_OFFSET if value
       end
 
       def draw_board(board)
@@ -59,42 +45,36 @@ module TicTacToe
         @output.print(ANSI_CLS + ANSI_HOME)
       end
 
-      # outside loop not recursion
-      # #same level of abstraction
-      def prompt_game_type(options)
+      def prompt_board_type(options)
+        input_board = InputBoard.new(@input)
         loop do
-          input_value = prompt_game_type_input(options)
-          value = convert_input_to_game_type(input_value)
-          return value if valid_game_type?(value)
-          display_message(INVALID_GAME_TYPE_PROMPT)
+          display_message(options)
+          display_message(input_board.prompt_message)
+          input_board.parse_input
+          return input_board.value if input_board.valid?
+          display_message(input_board.invalid_message)
         end
       end
 
-      def prompt_game_type_input(options)
-          #one level
+      def prompt_game_type(options)
+        input_game_type = InputGameType.new(@input)
+        loop do
           display_message(options)
-          display_message(ENTER_GAME_TYPE_PROMPT)
-          #another level
-          @input.gets
-      end
-
-      def convert_input_to_game_type(value)
-        value[/^[1-4]$/] && value.to_i
-      end
-
-      def valid_game_type?(game_type_input)
-          game_type_input
+          display_message(input_game_type.prompt_message)
+          input_game_type.parse_input
+          return input_game_type.value if input_game_type.valid?
+          display_message(input_game_type.invalid_message)
+        end
       end
 
       #returns in the middle are a smell
       def prompt_play_again?
-        display_message(PLAY_AGAIN_PROMPT)
-        value = @input.gets.chomp
-        if value == YES_INPUT|| value == NO_INPUT
-          value == YES_INPUT
-        else
-          display_message(INVALID_PLAY_AGAIN_PROMPT)
-          self.prompt_play_again?
+        input_new_game = InputNewGame.new(@input)
+        loop do
+          display_message(input_new_game.prompt_message)
+          input_new_game.parse_input
+          return input_new_game.value == InputNewGame::YES_INPUT if input_new_game.valid?
+          display_message(input_new_game.invalid_message)
         end
       end
 
