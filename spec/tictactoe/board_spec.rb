@@ -11,7 +11,7 @@ module TicTacToe
 
     it "starts with an empty board" do
       board = Board.new()
-      expect(board.string_positions).to eq('-' * Board::BOARD_SIZE)
+      expect(board.string_positions).to eq('---------')
     end
 
     it "makes a move" do
@@ -125,6 +125,36 @@ module TicTacToe
         board = initial_board('XOXOOXXXO')
         expect(board.draw?).to be true
       end
+    end
+
+    it 'works out the horizontal win cases' do
+      board = Board.new(3)
+      expect(board.horizontal_wins).to eq([[0, 1, 2], [3, 4, 5], [6, 7, 8]])
+    end
+
+    it 'works out the horizontal win cases for a 4 board' do
+      board = Board.new(4)
+      expect(board.horizontal_wins).to eq([[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]])
+    end
+
+    it 'works out the vertical win cases for a 3 board' do
+      board = Board.new(3)
+      expect(board.vertical_wins).to eq([[0, 3, 6], [1, 4, 7], [2, 5, 8]])
+    end
+
+    it 'works out the vertical win cases for a 4 board' do
+      board = Board.new(4)
+      expect(board.vertical_wins).to eq([[0, 4, 8, 12], [1, 5, 9, 13], [2, 6, 10, 14], [3, 7, 11, 15]])
+    end
+
+    it 'works out the diagonal win for a 3 board' do
+      board = Board.new(3)
+      expect(board.diagonal_wins).to eq([[0, 4, 8], [2, 4, 6]])
+    end
+    
+    it 'works out the diagonal win for a 4 board' do
+      board = Board.new(4)
+      expect(board.diagonal_wins).to eq([[0, 5, 10, 15], [3, 6, 9, 12]])
     end
   end
 end
