@@ -13,7 +13,7 @@ module TicTacToe
       @board = board
       @players = players
       @current_player = @players[PLAYER_1]
-      @ui = ui
+      @display = ui
     end
 
     def update
@@ -22,9 +22,9 @@ module TicTacToe
     end
 
     def draw
-      @ui.clear_screen
-      @ui.draw_board(@board)
-      @ui.display_message(@board.game_over_message) if game_over?
+      @display.clear_screen
+      @display.draw_board(@board)
+      @display.display_message(@board.game_over_message) if game_over?
     end
 
     def running?

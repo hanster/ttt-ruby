@@ -32,7 +32,7 @@ module TicTacToe
         next_board = board.move(move, marker)
         return MINIMAX_MAX_VALUE if next_board.won?(marker)
         return MINIMAX_DRAW_VALUE if next_board.draw?
-        return 0 if depth == -1
+        return 0 if depth == 0
 
         next_marker = opponent(marker)
         next_move = calculate_next_move(next_board, next_marker, -beta, -alpha, depth - 1)

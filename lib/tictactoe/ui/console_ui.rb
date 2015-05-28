@@ -9,13 +9,7 @@ module TicTacToe
       GOODBYE_MESSAGE = "Goodbye and Thanks for playing!"
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
-      INDEX_OFFSET = 1
-
-      # SRP - validation
-      # prompt for new game
-      # prompt for game types
-      # prompt for moves and the displaying of the board
-      # prompt for board type
+      INDEX_OFFSET = InputMove::INDEX_OFFSET
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
@@ -26,6 +20,20 @@ module TicTacToe
         @output.puts message
       end
 
+      def draw_board(board)
+        board_positions = offset_indices(board.positions_representation)
+        display_message(board.get_template % board_positions)
+      end
+
+      def clear_screen
+        @output.print(ANSI_CLS + ANSI_HOME)
+      end
+
+      def prompt_good_bye
+        display_message(GOODBYE_MESSAGE)
+      end
+
+      # how do I extract this duplication?
       def prompt_for_move(board, marker)
         input_move = InputMove.new(@input, marker)
         loop do
@@ -34,15 +42,6 @@ module TicTacToe
           return input_move.value if input_move.valid?(board)
           display_message(input_move.invalid_message)
         end
-      end
-
-      def draw_board(board)
-        board_positions = offset_indices(board.positions_representation)
-        display_message(board.get_template % board_positions)
-      end
-
-      def clear_screen
-        @output.print(ANSI_CLS + ANSI_HOME)
       end
 
       def prompt_board_type(options)
@@ -67,7 +66,6 @@ module TicTacToe
         end
       end
 
-      #returns in the middle are a smell
       def prompt_play_again?
         input_new_game = InputNewGame.new(@input)
         loop do
@@ -78,10 +76,6 @@ module TicTacToe
         end
       end
 
-      def prompt_good_bye
-        display_message(GOODBYE_MESSAGE)
-      end
-
       private
 
       def offset_indices(board_positions)
@@ -89,8 +83,6 @@ module TicTacToe
           position.is_a?(Integer) ? position + INDEX_OFFSET : position
         end
       end
-
-      # interact with board 
     end
   end
 end
