@@ -50,6 +50,5 @@ module TicTacToe
       game = game_setup.choose_game_type
       expect(ui.prompt_game_type_times_called).to eq(1)
     end
-
   end
 end

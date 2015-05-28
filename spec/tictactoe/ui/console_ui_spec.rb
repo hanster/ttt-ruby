@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'tictactoe/ui/console_ui'
+require 'tictactoe/board'
 require 'tictactoe/marker'
 
 module TicTacToe
@@ -13,26 +14,6 @@ module TicTacToe
         ui = ConsoleUi.new(input, output)
         ui.display_message("test message")
         expect(output.string).to start_with("test message")
-      end
-
-      it "takes in user input, which represents a move" do
-        input = StringIO.new("1\n")
-        ui = ConsoleUi.new(input, output)
-        user_input = ui.prompt_move_input(marker)
-        expect(user_input).to eq(1)
-      end
-
-      it "returns false when an move input is not 0-8" do
-        input = StringIO.new("a\n")
-        ui = ConsoleUi.new(input, output)
-        expect(ui.prompt_move_input(marker)).to be nil
-      end
-
-      it "asks the user to enter a move" do
-        input = StringIO.new("1\n")
-        ui = ConsoleUi.new(input, output)
-        ui.prompt_move_input(marker)
-        expect(output.string).to start_with("Player #{marker}, Please enter your next move: ")
       end
 
       it "keeps asking for the user to enter a move until it chooses a valid move" do
@@ -69,6 +50,15 @@ module TicTacToe
         expect(ui.prompt_game_type("options")).to be(2)
         expect(output.string).to include("Enter the game type: ")
         expect(output.string).to include("Invalid game type.")
+      end
+
+      it "prompts for the board type until a valid input is entered" do
+        input = StringIO.new("a\n5\n1\n")
+        ui = ConsoleUi.new(input, output)
+
+        expect(ui.prompt_board_type('options')).to be(1)
+        expect(output.string).to include("Enter board type: ")
+        expect(output.string).to include("Invalid board type.")
       end
 
       it "prompts to play again" do

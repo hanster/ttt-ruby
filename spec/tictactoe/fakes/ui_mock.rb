@@ -31,6 +31,10 @@ module TicTacToe
         @display_message_times_called += 1
       end
 
+      def prompt_board_type(options)
+
+      end
+
       def prompt_game_type(options)
         @prompt_game_type_times_called += 1
         @game_type_input

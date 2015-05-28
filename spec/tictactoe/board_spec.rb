@@ -18,6 +18,11 @@ module TicTacToe
       expect(board.string_positions).to eq('XO-------')
     end
 
+    it "after making a move, that move is no longer available" do
+      board = Board.new().move(0, Marker::X_MARKER)
+      expect(board.move_available?(0)).to be false
+    end
+
     it "keeps switching turns" do
       board = Board.new().move(0, Marker::X_MARKER).move(1, Marker::O_MARKER).move(2, Marker::X_MARKER)
       expect(board.string_positions).to eq('XOX------')

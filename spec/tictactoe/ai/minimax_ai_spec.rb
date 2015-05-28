@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/board'
+require 'tictactoe/board_four'
 
 module TicTacToe
   module Ai
@@ -34,23 +35,17 @@ module TicTacToe
         expect(minimax.calculate_next_move(board, o_marker)).to eq(4)
       end
 
-      it "scores 0 when the move will result in a draw" do
-        board = Board.initial_board('XOXOOX-XO')
-        move = 6
-        expect(minimax.score(board, x_marker, move)).to eq(0)
-      end
+      xit "board four perfermance test" do
+        require 'ruby-prof'
 
-      it "scores 100 when the move will result in a win for X" do
-        board = Board.initial_board('XOXOXOOX-')
-        move = 8
-        expect(minimax.score(board, x_marker, move)).to eq(100)
-      end
+        RubyProf.start
+        
+        board = BoardFour.initial_board('XO--XO--X-------')
+        expect(minimax.calculate_next_move(board, o_marker)).to eq (12) 
 
-      it "scores 100 when the move will result in a win for O" do
-        board = Board.initial_board('OXOOX----')
-        move = 6
-
-        expect(minimax.score(board, o_marker, move)).to eq(100)
+        result = RubyProf.stop
+        printer = RubyProf::GraphHtmlPrinter.new(result)
+        printer.print(STDOUT)
       end
     end
   end
