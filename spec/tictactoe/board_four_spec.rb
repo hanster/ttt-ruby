@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/board'
 require 'tictactoe/board_four'
+require 'tictactoe/board_helper'
 
 module TicTacToe
   describe BoardFour do
@@ -15,7 +16,7 @@ module TicTacToe
     end
 
     it "wins horizontal" do
-      board = BoardFour.initial_board('-----------XXXXX')
+      board = BoardHelper.create_initial_board_four('-----------XXXXX')
       expect(board.has_won?(x_marker)).to be true
       expect(board.is_a?(BoardFour)).to be true
     end

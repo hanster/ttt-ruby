@@ -22,11 +22,6 @@ module TicTacToe
     DRAW = 'draw'
     ONGOING = 'ongoing'
 
-
-    def self.initial_board(layout)
-      Board.new(layout.split(''))
-    end
-
     def initialize(initial_positions = (EMPTY_MARKER * BOARD_SIZE).split(''))
       @positions = initial_positions
     end

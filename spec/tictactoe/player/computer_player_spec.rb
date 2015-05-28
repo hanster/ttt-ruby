@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/player/computer_player'
 require 'tictactoe/marker'
+require 'tictactoe/board_helper'
 
 module TicTacToe
   module Player
@@ -14,7 +15,7 @@ module TicTacToe
       end
 
       it "returns a valid board move" do
-        board = Board.initial_board('-OOOXXXOO')
+        board = BoardHelper.create_initial_board_three('-OOOXXXOO')
         expect(player.next_move(board)).to eq(0)
       end
     end

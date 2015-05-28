@@ -16,10 +16,6 @@ module TicTacToe
     DIAGONAL_WIN_CASES = [[0, 5, 10, 15], [3, 6, 9, 12]]
     ALL_WIN_CASES = VERTICAL_WIN_CASES + HORIZONAL_WIN_CASES + DIAGONAL_WIN_CASES
 
-    def self.initial_board(layout)
-      BoardFour.new(layout.split(''))
-    end
-
     def initialize(initial_positions = (EMPTY_MARKER * BOARD_SIZE).split(''))
       super(initial_positions)
     end
