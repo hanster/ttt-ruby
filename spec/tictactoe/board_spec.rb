@@ -4,6 +4,7 @@ require 'tictactoe/board_helper'
 
 module TicTacToe
   describe Board do
+    let(:x_marker) { Marker::X_MARKER }
 
     def initial_board(layout)
       BoardHelper.create_initial_board_three(layout)
@@ -15,22 +16,22 @@ module TicTacToe
     end
 
     it "makes a move" do
-      board = Board.new().move(0, Marker::X_MARKER)
+      board = Board.new().move(0, x_marker)
       expect(board.string_positions).to eq('X--------')
     end
 
     it "changes turn after a move" do
-      board = Board.new().move(0, Marker::X_MARKER).move(1, Marker::O_MARKER)
+      board = Board.new().move(0, x_marker).move(1, Marker::O_MARKER)
       expect(board.string_positions).to eq('XO-------')
     end
 
     it "after making a move, that move is no longer available" do
-      board = Board.new().move(0, Marker::X_MARKER)
+      board = Board.new().move(0, x_marker)
       expect(board.move_available?(0)).to be false
     end
 
     it "keeps switching turns" do
-      board = Board.new().move(0, Marker::X_MARKER).move(1, Marker::O_MARKER).move(2, Marker::X_MARKER)
+      board = Board.new().move(0, x_marker).move(1, Marker::O_MARKER).move(2, x_marker)
       expect(board.string_positions).to eq('XOX------')
     end
 
@@ -108,7 +109,7 @@ module TicTacToe
     describe "#game_over_message#" do
       it "returns X wins message" do
         board = initial_board('XXX------')
-        expect(board.game_over_message).to eq("Game Over\n\n#{Marker::X_MARKER} wins!")
+        expect(board.game_over_message).to eq("Game Over\n\n#{x_marker} wins!")
       end
 
       it "returns draw message" do
@@ -155,6 +156,26 @@ module TicTacToe
     it 'works out the diagonal win for a 4 board' do
       board = Board.new(4)
       expect(board.diagonal_wins).to eq([[0, 5, 10, 15], [3, 6, 9, 12]])
+    end
+
+    it "returns all available positions" do
+      board = Board.new(4)
+      expect(board.available_moves).to eq((0..15).to_a)
+    end
+
+    it "wins horizontal" do
+      board = BoardHelper.create_initial_board_four('-----------XXXXX')
+      expect(board.has_won?(x_marker)).to be true
+    end
+
+    it "is not a win with 3 in a row" do
+      board = Board.new(4).move(0, x_marker).move(1, x_marker).move(2, x_marker)
+      expect(board.has_won?(x_marker)).to be false
+    end
+
+    it "makes a valid move" do
+      board = Board.new(4).move(14, x_marker)
+      expect(board.move_available?(14)).to be false
     end
   end
 end

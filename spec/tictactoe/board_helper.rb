@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'tictactoe/board'
-require 'tictactoe/board_four'
 
 module TicTacToe
   class BoardHelper
@@ -9,7 +8,7 @@ module TicTacToe
     end
   
     def self.create_initial_board_four(layout)
-      BoardFour.new(4, layout.split(''))
+      Board.new(4, layout.split(''))
     end
   end
 end

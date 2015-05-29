@@ -37,6 +37,21 @@ module TicTacToe
                                          "  7  |  8  |  9  \n")
       end
 
+      it "draws the board" do
+        board = Board.new(4)
+        input = StringIO.new
+        ui = ConsoleUi.new(input, output)
+        ui.draw_board(board)
+        expect(output.string).to include(
+          "  1  |  2  |  3  |  4  \n" +
+          "-----+-----+-----+-----\n" +
+          "  5  |  6  |  7  |  8  \n" +
+          "-----+-----+-----+-----\n" +
+          "  9  | 10  | 11  | 12  \n" +
+          "-----+-----+-----+-----\n" +
+          " 13  | 14  | 15  | 16  \n")
+      end
+
       it "clears the screen" do
         input = StringIO.new
         ui = ConsoleUi.new(input, output)

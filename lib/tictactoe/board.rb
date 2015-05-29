@@ -4,13 +4,7 @@ module TicTacToe
   class Board
     include Marker
 
-    BOARD_TEMPLATE = 
-      "\n" +
-      "  %s  |  %s  |  %s  \n" +
-      "-----+-----+-----\n" +
-      "  %s  |  %s  |  %s  \n" +
-      "-----+-----+-----\n" +
-      "  %s  |  %s  |  %s  \n\n"
+    attr_reader :dimension
     DRAW = 'draw'
     ONGOING = 'ongoing'
 
@@ -72,6 +66,14 @@ module TicTacToe
       end
     end
 
+    def marker_at_position(position)
+      positions[position]
+    end
+
+    def all_moves
+      (0...positions.length).to_a
+    end
+
     #ask for winner and display in ui
     def game_over_message
       message = ''
@@ -88,10 +90,6 @@ module TicTacToe
     def draw?
       @state ||= calculate_state
       @state == DRAW
-    end
-
-    def get_template
-      BOARD_TEMPLATE
     end
 
     def horizontal_wins

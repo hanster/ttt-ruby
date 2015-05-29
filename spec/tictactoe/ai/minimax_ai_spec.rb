@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/board'
-require 'tictactoe/board_four'
 require 'tictactoe/board_helper'
 
 module TicTacToe

@@ -4,7 +4,6 @@ require 'tictactoe/factory/players_factory'
 require 'tictactoe/player/human_player'
 require 'tictactoe/game'
 require 'tictactoe/board'
-require 'tictactoe/board_four'
 
 module TicTacToe
   class GameSetup
@@ -36,9 +35,9 @@ module TicTacToe
     def choose_board_type
       case @ui.prompt_board_type(BOARD_TYPES_PROMPT)
       when THREE_BOARD
-        return Board.new
+        return Board.new(3)
       when FOUR_BOARD
-        return BoardFour.new
+        return Board.new(4)
       else
         return Board.new
       end

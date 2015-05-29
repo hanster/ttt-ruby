@@ -10,6 +10,10 @@ module TicTacToe
       ANSI_CLS = "\u001b[2J"
       ANSI_HOME = "\u001b[H"
       INDEX_OFFSET = InputMove::INDEX_OFFSET
+      CELL_WIDTH = 5
+      VERTICAL_SEP = '|'
+      HORIZONTAL_SEP = '-'
+      CROSS_JOIN = '#'
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
@@ -21,8 +25,13 @@ module TicTacToe
       end
 
       def draw_board(board)
-        board_positions = offset_indices(board.positions_representation)
-        display_message(board.get_template % board_positions)
+        new_empty_line
+        display_message(make_board_representation(board))
+        new_empty_line
+      end
+
+      def new_empty_line
+        @output.puts
       end
 
       def clear_screen
@@ -78,10 +87,43 @@ module TicTacToe
 
       private
 
-      def offset_indices(board_positions)
-        board_positions.map do |position|
-          position.is_a?(Integer) ? position + INDEX_OFFSET : position
+      def make_board_representation(board)
+        board_positions = offset_indices(board)
+        center_positions = center_positions(board_positions)
+        rows = split_positions_into_rows(center_positions, board.dimension)
+        horizon_sep = join_columns(rows)
+        join_rows(horizon_sep, board)
+      end
+
+      def offset_indices(board)
+        board.all_moves.map do |move|
+          board.move_available?(move) ? move + INDEX_OFFSET : board.marker_at_position(move)
         end
+      end
+
+      def join_rows(rows, board)
+        rows.join(row_seperator(board))
+      end
+
+      def join_columns(rows)
+        rows.map do |row|
+          row.join(VERTICAL_SEP)
+        end
+      end
+
+      def split_positions_into_rows(positions, row_length)
+        positions.each_slice(row_length).to_a
+      end
+
+      def center_positions(positions)
+        positions.map do |position|
+          position.to_s.center(CELL_WIDTH)
+        end
+      end
+
+      def row_seperator(board)
+        columns = Array.new(board.dimension, HORIZONTAL_SEP * CELL_WIDTH)
+        "\n" + columns.join(CROSS_JOIN) + "\n"
       end
     end
   end
