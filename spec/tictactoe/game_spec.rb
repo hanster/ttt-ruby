@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/game'
 require 'tictactoe/fakes/ui_mock'
+require 'tictactoe/board_helper'
 
 module TicTacToe
   describe Game do
@@ -9,6 +10,10 @@ module TicTacToe
     let(:players) { [player_1, player_2] }
     let(:ui) { Fakes::UiMock.new }
 
+    def initial_board(layout)
+      BoardHelper.create_initial_board_three(layout)
+    end
+
     it "is running when you have a new game" do
       board = Board.new
       game = Game.new(board, players)
@@ -16,7 +21,7 @@ module TicTacToe
     end
 
     it "is not running when the board is full" do
-      board = Board.initial_board('XXXOOOXXX')
+      board = initial_board('XXXOOOXXX')
       game = Game.new(board, players)
       expect(game.running?).to be false
     end
@@ -58,7 +63,7 @@ module TicTacToe
     end
 
     it "displays the game over message if the game is no longer running" do
-      board = Board.initial_board('XXXOOOXXX')
+      board = initial_board('XXXOOOXXX')
       game = Game.new(board, players, ui)
 
       game.draw
@@ -66,7 +71,7 @@ module TicTacToe
     end
 
     it "exits the run method once the game is over" do
-      board = Board.initial_board('XOXOXOOX-')
+      board = initial_board('XOXOXOOX-')
       game = Game.new(board, players, ui)
       game.run
     end

@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'tictactoe/ui/console_ui'
 require 'tictactoe/board'
 require 'tictactoe/marker'
+require 'tictactoe/board_helper'
 
 module TicTacToe
   module Ui
@@ -19,7 +20,7 @@ module TicTacToe
       it "keeps asking for the user to enter a move until it chooses a valid move" do
         input = StringIO.new("a\n1\n8\n")
         ui = ConsoleUi.new(input, output)
-        board = Board.initial_board('XXXXXX---')
+        board = BoardHelper.create_initial_board_three('XXXXXX---')
         expect(ui.prompt_for_move(board, marker)).to eq(7)
         expect(output.string).to include("Cannot make that move, try again.")
       end
@@ -34,6 +35,21 @@ module TicTacToe
                                          "  4  |  5  |  6  \n" +
                                          "-----+-----+-----\n" +
                                          "  7  |  8  |  9  \n")
+      end
+
+      it "draws the board" do
+        board = Board.new(4)
+        input = StringIO.new
+        ui = ConsoleUi.new(input, output)
+        ui.draw_board(board)
+        expect(output.string).to include(
+          "  1  |  2  |  3  |  4  \n" +
+          "-----+-----+-----+-----\n" +
+          "  5  |  6  |  7  |  8  \n" +
+          "-----+-----+-----+-----\n" +
+          "  9  | 10  | 11  | 12  \n" +
+          "-----+-----+-----+-----\n" +
+          " 13  | 14  | 15  | 16  \n")
       end
 
       it "clears the screen" do

@@ -4,30 +4,14 @@ module TicTacToe
   class Board
     include Marker
 
-    BOARD_TEMPLATE = 
-      "\n" +
-      "  %s  |  %s  |  %s  \n" +
-      "-----+-----+-----\n" +
-      "  %s  |  %s  |  %s  \n" +
-      "-----+-----+-----\n" +
-      "  %s  |  %s  |  %s  \n\n"
-    BOARD_DIM = 3
-    BOARD_SIZE = BOARD_DIM * BOARD_DIM
-    # use dim to calculate the win cases, but don't want to calculate them dynamically each time as we 
-    # create a new board with each move
-    HORIZONAL_WIN_CASES = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
-    VERTICAL_WIN_CASES = HORIZONAL_WIN_CASES.transpose
-    DIAGONAL_WIN_CASES = [[0, 4, 8], [2, 4, 6]]
-    ALL_WIN_CASES = VERTICAL_WIN_CASES + HORIZONAL_WIN_CASES + DIAGONAL_WIN_CASES
+    attr_reader :dimension
     DRAW = 'draw'
     ONGOING = 'ongoing'
 
-
-    def self.initial_board(layout)
-      Board.new(layout.split(''))
-    end
-
-    def initialize(initial_positions = (EMPTY_MARKER * BOARD_SIZE).split(''))
+    def initialize(dim = 3, initial_positions = nil)
+      @dimension = dim
+      @size = @dimension * @dimension
+      initial_positions ||= (EMPTY_MARKER * @size).split('')
       @positions = initial_positions
     end
 
@@ -46,7 +30,7 @@ module TicTacToe
     def move(position, marker)
       new_positions = positions.dup
       new_positions[position] = marker
-      Board.new(new_positions)
+      Board.new(@dimension, new_positions)
     end
 
     def string_positions
@@ -82,6 +66,14 @@ module TicTacToe
       end
     end
 
+    def marker_at_position(position)
+      positions[position]
+    end
+
+    def all_moves
+      (0...positions.length).to_a
+    end
+
     #ask for winner and display in ui
     def game_over_message
       message = ''
@@ -100,8 +92,29 @@ module TicTacToe
       @state == DRAW
     end
 
-    def get_template
-      BOARD_TEMPLATE
+    def horizontal_wins
+      (0...@dimension).inject([]) do |wins, row|
+        start_row_index = row * @dimension
+        end_row_index = (row + 1) * @dimension
+        wins << (start_row_index...end_row_index).to_a
+      end
+    end
+
+    def vertical_wins
+      horizontal_wins.transpose
+    end
+
+    def diagonal_wins
+      wins = []
+      left_right = []
+      (0...@dimension).each do |row|
+        left_right << row + row * @dimension
+      end
+      right_left = []
+      (1..@dimension).each do |row|
+        right_left << row * @dimension - row
+      end
+      wins << left_right << right_left
     end
 
     private
@@ -125,7 +138,7 @@ module TicTacToe
 
     # duplicate code for has_won? but it checks bother markers at the same time for performance gains
     def has_anyone_won?
-      has_won?(O_MARKER) || has_won?(X_MARKER)
+      won?(O_MARKER) || won?(X_MARKER)
     end
 
     def no_more_moves?
@@ -133,7 +146,7 @@ module TicTacToe
     end
 
     def get_win_cases
-      ALL_WIN_CASES
+      horizontal_wins + vertical_wins + diagonal_wins
     end
   end
 end

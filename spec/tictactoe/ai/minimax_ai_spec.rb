@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/board'
-require 'tictactoe/board_four'
+require 'tictactoe/board_helper'
 
 module TicTacToe
   module Ai
@@ -10,28 +10,32 @@ module TicTacToe
       let(:x_marker) { MinimaxAi::X_MARKER }
       let(:o_marker) { MinimaxAi::O_MARKER }
 
+      def initial_board(layout)
+        BoardHelper.create_initial_board_three(layout)
+      end
+
       it "returns the only possible move if there is one move left" do
-        board = Board.initial_board('XOXOOX-XO')
+        board = initial_board('XOXOOX-XO')
         expect(minimax.calculate_next_move(board, x_marker)).to eq(6)
       end
 
       it "returns the winning move from 2 possible moves for the O marker" do
-        board = Board.initial_board('XOXXOO--X')
+        board = initial_board('XOXXOO--X')
         expect(minimax.calculate_next_move(board, o_marker)).to eq(7)
       end
 
       it "returns the winning move from 2 possible moves for the X marker" do
-        board = Board.initial_board('XOXXOO--X')
+        board = initial_board('XOXXOO--X')
         expect(minimax.calculate_next_move(board, x_marker)).to eq(6)
       end
 
       it "return blocking move when no win is available" do
-        board = Board.initial_board('XOXO-O-X-')
+        board = initial_board('XOXO-O-X-')
         expect(minimax.calculate_next_move(board, x_marker)).to eq(4)
       end
 
       it "return blocking move when no win is available for O marker" do
-        board = Board.initial_board('OXOX-X-O-')
+        board = initial_board('OXOX-X-O-')
         expect(minimax.calculate_next_move(board, o_marker)).to eq(4)
       end
 

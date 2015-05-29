@@ -8,7 +8,7 @@ module TicTacToe
       end
 
       def next_move(board)
-        if board.is_a?(BoardFour) && board.available_moves.count > 11
+        if board.available_moves.count > 11
           return board.available_moves.sample
         end
         @ai.calculate_next_move(board, @marker)
