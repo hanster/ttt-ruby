@@ -1,6 +1,7 @@
 require 'tictactoe/marker'
 require 'tictactoe/game_types'
 require 'tictactoe/factory/players_factory'
+require 'tictactoe/factory/board_factory'
 require 'tictactoe/player/human_player'
 require 'tictactoe/game'
 require 'tictactoe/board'
@@ -9,11 +10,10 @@ module TicTacToe
   class GameSetup
     include GameTypes
     include Marker
-    THREE_BOARD = 1
-    FOUR_BOARD = 2
     BOARD_TYPES_PROMPT = "Board Types:\n" +
-      "1 - 3x3\n" +
-      "2 - 4x4\n"
+      "1 - 2x2\n" +
+      "2 - 3x3\n" +
+      "3 - 4x4\n"
 
     def initialize(ui, ai)
       @ui = ui
@@ -33,14 +33,8 @@ module TicTacToe
     end
 
     def choose_board_type
-      case @ui.prompt_board_type(BOARD_TYPES_PROMPT)
-      when THREE_BOARD
-        return Board.new(3)
-      when FOUR_BOARD
-        return Board.new(4)
-      else
-        return Board.new
-      end
+      board_type = @ui.prompt_board_type(BOARD_TYPES_PROMPT)
+      Factory::BoardFactory.new.create(board_type)
     end
   end
 end

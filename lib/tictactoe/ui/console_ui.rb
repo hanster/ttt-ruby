@@ -13,7 +13,7 @@ module TicTacToe
       CELL_WIDTH = 5
       VERTICAL_SEP = '|'
       HORIZONTAL_SEP = '-'
-      CROSS_JOIN = '#'
+      CROSS_JOIN = '+'
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
