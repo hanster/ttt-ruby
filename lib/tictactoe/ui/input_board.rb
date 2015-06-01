@@ -28,7 +28,7 @@ module TicTacToe
       private 
 
       def convert_input_to_board_type(value)
-        value[/^[1-2]$/] && value.to_i
+        value[/^[1-3]$/] && value.to_i
       end
     end
   end
