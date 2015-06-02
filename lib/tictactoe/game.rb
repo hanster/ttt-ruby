@@ -43,15 +43,19 @@ module TicTacToe
       end
     end
 
+    def draw?
+      @board.draw?
+    end
+
+    def switch_current_player
+      @current_player = @current_player == @players[PLAYER_1] ? @players[PLAYER_2] : @players[PLAYER_1]
+    end
+
     private
 
     def make_player_move
       move = @current_player.next_move(@board)
       @board = @board.move(move, @current_player.marker)
-    end
-
-    def switch_current_player
-      @current_player = @current_player == @players[PLAYER_1] ? @players[PLAYER_2] : @players[PLAYER_1]
     end
   end
 end
