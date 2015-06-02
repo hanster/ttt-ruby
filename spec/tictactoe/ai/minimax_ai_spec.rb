@@ -39,17 +39,25 @@ module TicTacToe
         expect(minimax.calculate_next_move(board, o_marker)).to eq(4)
       end
 
-      xit "board four perfermance test" do
-        require 'ruby-prof'
+      it "profile board four perfermance test" do
+        board = BoardHelper.create_initial_board_four('X-O--X---OX-----')
+        expect(minimax.calculate_next_move(board, o_marker)).to eq (15)
+      end
 
-        RubyProf.start
-        
-        board = BoardFour.initial_board('XO--XO--X-------')
-        expect(minimax.calculate_next_move(board, o_marker)).to eq (12) 
+      it "board four perfermance test for first ai move" do
+        require 'benchmark'
 
-        result = RubyProf.stop
-        printer = RubyProf::GraphHtmlPrinter.new(result)
-        printer.print(STDOUT)
+        res = Benchmark.measure {
+
+          board = BoardHelper.create_initial_board_four('X-O--X---OX-----')
+          expect(minimax.calculate_next_move(board, o_marker)).to eq (15)
+        }
+        puts res
+      end
+
+      it "blocks the X from winning" do
+        board = BoardHelper.create_initial_board_four('OOXXOOX---X----X')
+        expect(minimax.calculate_next_move(board, o_marker)).to eq(14)
       end
     end
   end

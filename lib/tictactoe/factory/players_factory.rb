@@ -1,5 +1,7 @@
 require 'tictactoe/marker'
 require 'tictactoe/game_types'
+require 'tictactoe/player/computer_player'
+require 'tictactoe/player/human_player'
 
 module TicTacToe
   module Factory

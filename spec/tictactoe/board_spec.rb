@@ -5,6 +5,7 @@ require 'tictactoe/board_helper'
 module TicTacToe
   describe Board do
     let(:x_marker) { Marker::X_MARKER }
+    let(:o_marker) { Marker::O_MARKER }
 
     def initial_board(layout)
       BoardHelper.create_initial_board_three(layout)
@@ -69,41 +70,41 @@ module TicTacToe
       end
     end
 
-    describe "#has_won?" do
+    describe "#won?" do
       context "not won" do
         it "No wins yet" do
           board = Board.new
-          expect(board.has_won?('X')).to be false
-          expect(board.has_won?('O')).to be false
+          expect(board.won?('X')).to be false
+          expect(board.won?('O')).to be false
           board = initial_board('OXXXXOOOX')
-          expect(board.has_won?('X')).to be false
-          expect(board.has_won?('O')).to be false
+          expect(board.won?('X')).to be false
+          expect(board.won?('O')).to be false
         end
       end
       context "player has won" do
         it "vertical cases" do
           board = initial_board('XO-XX-X--')
-          expect(board.has_won?('X')).to be true
+          expect(board.won?('X')).to be true
           board = initial_board('-X--X--X-')
-          expect(board.has_won?('X')).to be true
+          expect(board.won?('X')).to be true
           board = initial_board('--X--X--X')
-          expect(board.has_won?('X')).to be true
+          expect(board.won?('X')).to be true
         end
 
         it "horizontal cases" do
           board = initial_board('OOO------')
-          expect(board.has_won?('O')).to be true
+          expect(board.won?('O')).to be true
           board = initial_board('---OOO---')
-          expect(board.has_won?('O')).to be true
+          expect(board.won?('O')).to be true
           board = initial_board('------OOO')
-          expect(board.has_won?('O')).to be true
+          expect(board.won?('O')).to be true
         end
 
         it "diagonal cases" do 
           board = initial_board('X---X---X')
-          expect(board.has_won?('X')).to be true
+          expect(board.won?('X')).to be true
           board = initial_board('--O-O-O--')
-          expect(board.has_won?('O')).to be true
+          expect(board.won?('O')).to be true
         end
       end
     end
@@ -172,12 +173,12 @@ module TicTacToe
 
     it "wins horizontal" do
       board = BoardHelper.create_initial_board_four('-----------XXXXX')
-      expect(board.has_won?(x_marker)).to be true
+      expect(board.won?(x_marker)).to be true
     end
 
     it "is not a win with 3 in a row" do
       board = Board.new(4).move(0, x_marker).move(1, x_marker).move(2, x_marker)
-      expect(board.has_won?(x_marker)).to be false
+      expect(board.won?(x_marker)).to be false
     end
 
     it "makes a valid move" do
