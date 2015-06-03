@@ -70,6 +70,13 @@ module TicTacToe
       expect(ui.display_message_times_called).to eq(1)
     end
 
+    it "returns the game is a draw correctly" do
+      board = initial_board('OXOOXOXOX')
+      game = Game.new(board, players, ui)
+
+      expect(game.draw?).to be true
+    end
+
     it "exits the run method once the game is over" do
       board = initial_board('XOXOXOOX-')
       game = Game.new(board, players, ui)

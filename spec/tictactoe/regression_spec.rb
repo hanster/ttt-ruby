@@ -35,7 +35,7 @@ describe 'check full games end in draw with minimax' do
     expect(game.draw?).to be true
   end
 
-  xit 'plays a C v C game to a draw' do
+  it 'plays a C v C game to a draw' do
     game = TicTacToe::Game.new(TicTacToe::Board.new(4), players, ui)
     game.run
     expect(game.draw?).to be true

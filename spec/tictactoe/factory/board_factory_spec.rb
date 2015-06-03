@@ -13,17 +13,17 @@ module TicTacToe
       end
 
       it 'creates a new 2 by 2 board' do
-        board = board_factory.create(1)
+        board = board_factory.create(BoardFactory::TWO_BOARD)
         expect(board.dimension).to eq(2)
       end
 
       it 'creates a new 3 by 3 board' do
-        board = board_factory.create(2)
+        board = board_factory.create(BoardFactory::THREE_BOARD)
         expect(board.dimension).to eq(3)
       end
 
       it 'creates a new 4 by 4 board' do
-        board = board_factory.create(3)
+        board = board_factory.create(BoardFactory::FOUR_BOARD)
         expect(board.dimension).to eq(4)
       end
 

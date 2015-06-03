@@ -3,6 +3,7 @@ module TicTacToe
     class InputBoard
       BOARD_TYPE_PROMPT = "Enter board type: "
       INVALID_BOARD_TYPE_PROMPT = "Invalid board type."
+      VALID_BOARD_INPUTS = [1, 2, 3]
       attr_reader :value
 
       def initialize(input)
@@ -22,7 +23,7 @@ module TicTacToe
       end
 
       def valid?
-        @value
+        VALID_BOARD_INPUTS.include?(@value)
       end
 
       private 
