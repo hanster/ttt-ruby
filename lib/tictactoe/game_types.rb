@@ -9,5 +9,11 @@ module TicTacToe
       " 2 - Computer vs Human\n" +
       " 3 - Human vs Computer\n" +
       " 4 - Computer vs Computer\n"
+    PLAYER_OPTIONS = {
+      1 => 'Human vs Human',
+      2 => 'Computer vs Human',
+      3 => 'Human vs Computer',
+      4 => 'Computer vs Computer'
+    }
   end
 end

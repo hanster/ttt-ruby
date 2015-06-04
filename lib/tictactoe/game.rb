@@ -3,7 +3,6 @@ require 'tictactoe/ui/console_ui'
 module TicTacToe
   class Game
     PLAYER_1 = 0
-
     PLAYER_2 = 1
 
     attr_reader :players
