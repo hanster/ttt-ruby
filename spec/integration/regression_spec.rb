@@ -11,15 +11,15 @@ describe 'check full games end in draw with minimax' do
   let(:player_factory) { TicTacToe::Factory::PlayersFactory.new(ui, ai) }
   let(:players) { player_factory.create(TicTacToe::Factory::PlayersFactory::CVC_GAME_TYPE) }
 
-  xit 'plays 1000 games and all end in a draw' do
-    1000.times do |i|
+  it 'plays 1000 games and all end in a draw' do
+    100.times do |i|
       game = TicTacToe::Game.new(TicTacToe::Board.new(4), players, ui)
       game.run
       expect(game.draw?).to be true
     end
   end
 
-  xit 'draws in a previously winning game setup' do
+  it 'draws in a previously winning game setup' do
     board = TicTacToe::BoardHelper.create_initial_board_four('-OX-O-----X----X')
     game = TicTacToe::Game.new(board, players, ui)
     game.switch_current_player
@@ -27,7 +27,7 @@ describe 'check full games end in draw with minimax' do
     expect(game.draw?).to be true
   end
 
-  xit 'draws in a previously winning game setup 2' do
+  it 'draws in a previously winning game setup 2' do
     board = TicTacToe::BoardHelper.create_initial_board_four('O--X----O--X--X-')
     game = TicTacToe::Game.new(board, players, ui)
     game.switch_current_player
