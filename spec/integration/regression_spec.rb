@@ -11,8 +11,8 @@ describe 'check full games end in draw with minimax' do
   let(:player_factory) { TicTacToe::Factory::PlayersFactory.new(ui, ai) }
   let(:players) { player_factory.create(TicTacToe::Factory::PlayersFactory::CVC_GAME_TYPE) }
 
-  it 'plays 1000 games and all end in a draw' do
-    100.times do |i|
+  it 'plays 50 games and all end in a draw' do
+    50.times do |i|
       game = TicTacToe::Game.new(TicTacToe::Board.new(4), players, ui)
       game.run
       expect(game.draw?).to be true
