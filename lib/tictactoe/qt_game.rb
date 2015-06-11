@@ -1,4 +1,4 @@
-require 'qt'
+require 'Qt'
 require 'tictactoe/gui_game'
 require 'tictactoe/marker'
 require 'tictactoe/factory/players_factory'

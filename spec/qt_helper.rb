@@ -1,4 +1,4 @@
-require 'qt'
+require 'Qt'
 
 RSpec::Matchers.define :have_label_with_text do |expected|
   match do |widget|

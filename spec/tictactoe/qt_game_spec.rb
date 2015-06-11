@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'tictactoe/qt_game'
-require 'qt'
+require 'Qt'
 
 module TicTacToe
   describe QtGame do
