@@ -15,5 +15,18 @@ module TicTacToe
       3 => 'Human vs Computer',
       4 => 'Computer vs Computer'
     }
+    BOARD_OPTIONS = {
+      1 => '2x2',
+      2 => '3x3',
+      3 => '4x4'
+    }
+
+    def self.get_player_options
+      PLAYER_OPTIONS.values
+    end
+
+    def self.get_board_options
+      BOARD_OPTIONS.values
+    end
   end
 end

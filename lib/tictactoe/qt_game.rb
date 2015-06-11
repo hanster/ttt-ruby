@@ -1,19 +1,20 @@
 require 'qt'
 require 'tictactoe/gui_game'
-require 'tictactoe/board'
-require 'tictactoe/player/computer_player'
-require 'tictactoe/player/human_player'
 require 'tictactoe/marker'
 require 'tictactoe/factory/players_factory'
+require 'tictactoe/factory/board_factory'
 require 'tictactoe/ai/minimax_ai'
+require 'tictactoe/game_types'
 
 module TicTacToe
   class QtGame < Qt::Widget
 
-    slots :play_game, :clicked
+    slots :play_new_game, :clicked
 
     def initialize
       super(nil)
+      @grid_board = nil
+      setObjectName('TicTacToe')
       setWindowTitle('TicTacToe')
       resize(600, 600)
       @set_up_grid = Qt::GridLayout.new(self)
@@ -26,6 +27,7 @@ module TicTacToe
       @set_up_grid.addWidget(create_play_button,0,2)
 
       @info_label = Qt::Label.new
+      @info_label.objectName = 'info_label'
       @set_up_grid.addWidget(@info_label, 4, 0)
       @ai = Ai::MinimaxAi.new
 
@@ -35,26 +37,25 @@ module TicTacToe
     def create_play_button
       play_button = Qt::PushButton.new('Play')
       play_button.objectName = 'play_button'
-      connect(play_button, SIGNAL(:clicked), self, SLOT(:play_game))
+      connect(play_button, SIGNAL(:clicked), self, SLOT(:play_new_game))
       play_button
     end
 
     def add_board
-      remove_board if @board != nil
-      @board = create_board
-      @board..setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
-      @set_up_grid.addLayout(@board, 1, 0,3,3)
+      remove_board unless @grid_board.nil?
+      @grid_board = create_board
+      @set_up_grid.addLayout(@grid_board, 1, 0,3,3)
     end
 
     def remove_board
       clear_panels
-      @set_up_grid.removeItem(@board)
+      @set_up_grid.removeItem(@grid_board)
     end
 
     def clear_panels
       @panels.each do |panel|
         panel.hide
-        @board.removeWidget(panel)
+        @grid_board.removeWidget(panel)
         panel.dispose
       end
     end
@@ -75,11 +76,11 @@ module TicTacToe
       grid_board
     end
 
-    def play_game
+    def play_new_game
       set_up_board_dim
       add_board
       set_up_players
-      @game = GuiGame.new(Board.new(@board_dim), @players)
+      @game = GuiGame.new(@board, @players)
       update_game
     end
 
@@ -89,46 +90,42 @@ module TicTacToe
     end
 
     def set_up_board_dim
-      case @board_type_button_group.checkedButton.text
-      when '3x3'
-        @board_dim = 3
-      when '4x4'
-        @board_dim = 4
-      end
+      board_selection = @board_type_button_group.checkedButton.text
+      @board = Factory::BoardFactory.new.create_from_string(board_selection)
+      @board_dim = @board.dimension
     end
 
     def create_players_type_group
-      players_type_group = Qt::GroupBox.new('Game Types', self)
+      options = GameTypes::get_player_options
+      radio_buttons = create_radio_buttons(options)
 
-      hvh_radio = Qt::RadioButton.new('Human vs Human',self)
-      hvc_radio = Qt::RadioButton.new('Human vs Computer',self)
-      cvh_radio = Qt::RadioButton.new('Computer vs Human',self)
-      cvc_radio = Qt::RadioButton.new('Computer vs Computer',self)
-      hvh_radio.setChecked(true)
-
-      vbox = Qt::VBoxLayout.new(players_type_group)
-      vbox.addWidget(hvh_radio)
-      vbox.addWidget(hvc_radio)
-      vbox.addWidget(cvh_radio)
-      vbox.addWidget(cvc_radio)
-
-      @players_type_button_group = create_button_group([hvh_radio, hvc_radio, cvh_radio, cvc_radio])
-      players_type_group
+      @players_type_button_group = create_button_group('player_type_b_group', radio_buttons)
+      create_group_box('Game Types', radio_buttons)
     end
 
     def create_board_type_group
-      board_type_group = Qt::GroupBox.new('Board Types', self)
+      options = GameTypes::get_board_options
+      radio_buttons = create_radio_buttons(options)
 
-      three_radio = Qt::RadioButton.new('3x3',self)
-      four_radio = Qt::RadioButton.new('4x4',self)
-      three_radio.setChecked(true)
+      @board_type_button_group = create_button_group('board_type_b_group', radio_buttons)
+      create_group_box('Board Types', radio_buttons)
+    end
 
-      vbox = Qt::VBoxLayout.new(board_type_group)
-      vbox.addWidget(three_radio)
-      vbox.addWidget(four_radio)
-      @board_type_button_group = create_button_group([three_radio, four_radio])
+    def create_group_box(object_name, radio_buttons)
+      group = Qt::GroupBox.new(object_name, self)
+      layout = Qt::VBoxLayout.new(group)
+      radio_buttons.each do |radio_button|
+        layout.addWidget(radio_button)
+      end
+      group
+    end
 
-      board_type_group
+    def create_radio_buttons(options)
+      options.reduce([]) do |radio_buttons, option|
+        radio_button = Qt::RadioButton.new(option, self)
+        radio_button.objectName = option
+        radio_buttons << radio_button
+      end
     end
 
     def update_game
@@ -137,7 +134,7 @@ module TicTacToe
       else
         @info_label.text = "Turn = Player #{@game.current_player.marker}"
         next_move = get_player_move
-        make_move(find_move_button(next_move)) if next_move
+        find_move_button(next_move).clicktkj if next_move
       end
     end
 
@@ -151,11 +148,14 @@ module TicTacToe
       @game.get_player_move
     end
 
-    def create_button_group(buttons)
+    def create_button_group(name, buttons)
       button_group = Qt::ButtonGroup.new(self)
+      button_group.objectName = name
       buttons.each do |button|
         button_group.addButton(button)
       end
+      default_button = button_group.buttons.first
+      default_button.setChecked(true)
       button_group
     end
 
