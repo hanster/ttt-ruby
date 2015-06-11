@@ -134,7 +134,7 @@ module TicTacToe
       else
         @info_label.text = "Turn = Player #{@game.current_player.marker}"
         next_move = get_player_move
-        find_move_button(next_move).clicktkj if next_move
+        find_move_button(next_move).click if next_move
       end
     end
 
