@@ -4,6 +4,14 @@ module TicTacToe
     CVH_GAME_TYPE = 2
     HVC_GAME_TYPE = 3
     CVC_GAME_TYPE = 4
+    TWO_BOARD = 1
+    THREE_BOARD = 2
+    FOUR_BOARD = 3
+
+    BOARD_TYPES_PROMPT = "Board Types:\n" +
+      "1 - 2x2\n" +
+      "2 - 3x3\n" +
+      "3 - 4x4\n"
     GAME_TYPES_PROMPT = "Game Types:\n" +
       " 1 - Human vs Human\n" +
       " 2 - Computer vs Human\n" +

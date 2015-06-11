@@ -132,7 +132,7 @@ module TicTacToe
       if @game.game_over?
         @info_label.text = @game.end_game_state
       else
-        @info_label.text = "Turn = Player #{@game.current_player.marker}"
+        @info_label.text = "Turn = Player #{@game.current_player_marker}"
         next_move = get_player_move
         find_move_button(next_move).click if next_move
       end
@@ -167,7 +167,7 @@ module TicTacToe
       return if @game.game_over?
       if button.text != 'X' && button.text != 'O'
         @game.make_player_move(button.text.to_i - 1)
-        button.text = @game.current_player.marker
+        button.text = @game.current_player_marker
         button.setStyleSheet("color: red") if button.text == 'X'
         button.setStyleSheet("color: blue") if button.text == 'O'
         @game.switch_current_player

@@ -11,22 +11,18 @@ module TicTacToe
     let(:players) { [Player::ComputerPlayer.new(Marker::X_MARKER), Player::HumanPlayer.new(nil, Marker::O_MARKER)] }
     let(:game) { GuiGame.new(board, players) }
 
-    it 'has a current player' do
-      expect(game.current_player).to be_kind_of(Player::ComputerPlayer)
-    end
-
     it 'switches the current player' do
-      prev_player_marker = game.current_player.marker
+      prev_player_marker = game.current_player_marker
       game.switch_current_player
-      expect(game.current_player.marker == prev_player_marker).to be false
+      expect(game.current_player_marker == prev_player_marker).to be false
     end
 
     it 'cycles round to the first player after switching twice' do
-      prev_player_marker = game.current_player.marker
+      prev_player_marker = game.current_player_marker
       game.switch_current_player
       game.switch_current_player
 
-      expect(game.current_player.marker == prev_player_marker).to be true
+      expect(game.current_player_marker == prev_player_marker).to be true
     end
 
     it 'makes a move on the board' do

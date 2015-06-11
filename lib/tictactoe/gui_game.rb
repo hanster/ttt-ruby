@@ -6,7 +6,7 @@ module TicTacToe
     PLAYER_1 = 0
     PLAYER_2 = 1
 
-    attr_reader :current_player
+    attr_reader :players
 
     def initialize(board, players)
       @board = board
@@ -32,6 +32,10 @@ module TicTacToe
 
     def game_over?
       @board.game_over?
+    end
+
+    def current_player_marker
+      @current_player.marker
     end
   end
 end

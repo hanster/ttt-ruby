@@ -16,7 +16,7 @@ module TicTacToe
     end
 
     def update
-      make_player_move
+      make_player_move(get_player_move)
       switch_current_player
     end
 
@@ -52,8 +52,11 @@ module TicTacToe
 
     private
 
-    def make_player_move
-      move = @current_player.next_move(@board)
+    def get_player_move
+      @current_player.next_move(@board)
+    end
+
+    def make_player_move(move)
       @board = @board.move(move, @current_player.marker)
     end
   end
