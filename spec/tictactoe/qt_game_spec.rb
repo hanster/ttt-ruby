@@ -46,6 +46,11 @@ module TicTacToe
       expect(find_widget('info_label').text).to eq("Game Over\n\nIt's a draw!")
     end
 
+    it 'displays the correct player turn text' do
+      find_widget('play_button').click
+      expect(find_widget('info_label').text).to eq("Turn = Player X")
+    end
+
     def find_widget(name)
       window.findChild(Qt::Widget, name)
     end

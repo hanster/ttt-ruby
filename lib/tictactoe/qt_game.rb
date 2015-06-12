@@ -19,6 +19,7 @@ module TicTacToe
     BOARD_TYPE_BUTTON_GROUP_NAME = 'board_type_b_group'
     GAME_TYPES_TEXT = 'Game Types'
     BOARD_TYPES_TEXT = 'Board Types'
+    PLAYER_TURN_TEXT = "Turn = Player %s"
 
     slots :play_new_game, :clicked
 
@@ -150,7 +151,7 @@ module TicTacToe
     end
 
     def player_turn_message
-      "Turn = Player #{@game.current_player_marker}"
+      PLAYER_TURN_TEXT % @game.current_player_marker
     end
 
     def find_move_button(move)
