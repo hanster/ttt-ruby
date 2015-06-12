@@ -45,14 +45,8 @@ module TicTacToe
       end
 
       it "board four perfermance test for first ai move" do
-        require 'benchmark'
-
-        res = Benchmark.measure {
-
-          board = BoardHelper.create_initial_board_four('X-O--X---OX-----')
-          expect(minimax.calculate_next_move(board, o_marker)).to eq (15)
-        }
-        puts res
+        board = BoardHelper.create_initial_board_four('X-O--X---OX-----')
+        expect(minimax.calculate_next_move(board, o_marker)).to eq (15)
       end
 
       it "blocks the X from winning" do

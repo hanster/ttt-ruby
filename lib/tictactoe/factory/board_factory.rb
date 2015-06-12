@@ -9,13 +9,13 @@ module TicTacToe
       def create(board_type)
         case board_type
         when TWO_BOARD
-          return Board.new(2)
+          return Board.make_board(2)
         when THREE_BOARD
-          return Board.new(3)
+          return Board.make_board(3)
         when FOUR_BOARD
-          return Board.new(4)
+          return Board.make_board(4)
         else
-          return Board.new
+          return Board.make_board(3)
         end
       end
 

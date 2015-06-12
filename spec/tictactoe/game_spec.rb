@@ -15,7 +15,7 @@ module TicTacToe
     end
 
     it "is running when you have a new game" do
-      board = Board.new
+      board = Board.make_board(3)
       game = Game.new(board, players)
       expect(game.running?).to be true
     end
@@ -27,14 +27,14 @@ module TicTacToe
     end
 
     it "update will make a move on the board" do
-      board = Board.new
+      board = Board.make_board(3)
       game = Game.new(board, players)
       game.update
       expect(game.running?).to be true
     end
 
     it "sets up 2 player and expect player 1 to make a move after one update" do
-      board = Board.new
+      board = Board.make_board(3)
       game = Game.new(board, players)
       game.update
 
@@ -43,7 +43,7 @@ module TicTacToe
     end
 
     it "changes the player between each move" do
-      board = Board.new
+      board = Board.make_board(3)
       game = Game.new(board, players)
       game.update
       game.update
@@ -54,7 +54,7 @@ module TicTacToe
     end
 
     it "draws the board" do
-      board = Board.new
+      board = Board.make_board(3)
       game = Game.new(board, players, ui)
 
       game.draw

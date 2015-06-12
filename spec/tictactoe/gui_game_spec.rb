@@ -1,13 +1,12 @@
 require 'spec_helper'
 require 'tictactoe/gui_game'
 require 'tictactoe/board'
-require 'tictactoe/player/computer_player'
 require 'tictactoe/player/human_player'
 require 'tictactoe/marker'
 
 module TicTacToe
   describe GuiGame do
-    let(:board) { Board.new }
+    let(:board) { Board.make_board(3) }
     let(:players) { [Player::ComputerPlayer.new(Marker::X_MARKER), Player::HumanPlayer.new(nil, Marker::O_MARKER)] }
     let(:game) { GuiGame.new(board, players) }
 

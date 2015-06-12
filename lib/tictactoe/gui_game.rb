@@ -1,4 +1,3 @@
-require 'tictactoe/marker'
 require 'tictactoe/player/computer_player'
 
 module TicTacToe

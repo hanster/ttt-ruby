@@ -26,7 +26,7 @@ module TicTacToe
       end
 
       it "draws the board" do
-        board = Board.new
+        board = Board.make_board(3)
         input = StringIO.new
         ui = ConsoleUi.new(input, output)
         ui.draw_board(board)
@@ -38,7 +38,7 @@ module TicTacToe
       end
 
       it "draws the board" do
-        board = Board.new(4)
+        board = Board.make_board(4)
         input = StringIO.new
         ui = ConsoleUi.new(input, output)
         ui.draw_board(board)

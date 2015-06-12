@@ -9,12 +9,16 @@ module TicTacToe
     DRAW = 'draw'
     ONGOING = 'ongoing'
 
-    def initialize(dim = 3, initial_positions = nil, win_case_calculator = nil)
+    def initialize(dim, initial_positions, win_case_calculator)
       @dimension = dim
-      initial_positions ||= (EMPTY_MARKER * @dimension * @dimension).split('')
       @positions = initial_positions
-      win_case_calculator ||= WinCaseCalculator.new(@dimension)
       @win_case_calculator = win_case_calculator
+    end
+
+    def self.make_board(dim, initial_positions = nil)
+      initial_positions ||= (EMPTY_MARKER * dim * dim).split('')
+      win_case_calculator = WinCaseCalculator.new(dim)
+      Board.new(dim, initial_positions, win_case_calculator)
     end
 
     def calculate_state

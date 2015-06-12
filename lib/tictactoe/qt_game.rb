@@ -165,14 +165,22 @@ module TicTacToe
 
     def make_move(button)
       return if @game.game_over?
-      if button.text != 'X' && button.text != 'O'
+      if valid_button_move?(button)
         @game.make_player_move(button.text.to_i - 1)
         button.text = @game.current_player_marker
-        button.setStyleSheet("color: red") if button.text == 'X'
-        button.setStyleSheet("color: blue") if button.text == 'O'
+        colour_button(button)
         @game.switch_current_player
       end
       update_game
+    end
+
+    def valid_button_move?(button)
+      button.text != 'X' && button.text != 'O'
+    end
+
+    def colour_button(button)
+      button.setStyleSheet("color: red") if button.text == 'X'
+      button.setStyleSheet("color: blue") if button.text == 'O'
     end
   end
 end

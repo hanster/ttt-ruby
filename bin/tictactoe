@@ -2,6 +2,7 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'tictactoe/ttt'
+require 'tictactoe/ai/minimax_ai'
 
 ui = TicTacToe::Ui::ConsoleUi.new
 ai = TicTacToe::Ai::MinimaxAi.new
