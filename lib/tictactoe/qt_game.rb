@@ -8,14 +8,25 @@ require 'tictactoe/game_types'
 
 module TicTacToe
   class QtGame < Qt::Widget
+    X_MARKER_COLOR = "color: red"
+    O_MARKER_COLOR = "color: blue"
+    TICTACTOE = 'TicTacToe'
+    INFO_LABEL_NAME = 'info_label'
+    PLAY_BUTTON_TEXT = 'Play'
+    PLAY_BUTTON_NAME = 'play_button'
+    GAME_BOARD_NAME = 'game_board'
+    PLAYER_TYPE_BUTTON_GROUP_NAME = 'player_type_b_group'
+    BOARD_TYPE_BUTTON_GROUP_NAME = 'board_type_b_group'
+    GAME_TYPES_TEXT = 'Game Types'
+    BOARD_TYPES_TEXT = 'Board Types'
 
     slots :play_new_game, :clicked
 
     def initialize
       super(nil)
       @grid_board = nil
-      setObjectName('TicTacToe')
-      setWindowTitle('TicTacToe')
+      setObjectName(TICTACTOE)
+      setWindowTitle(TICTACTOE)
       resize(600, 600)
       @set_up_grid = Qt::GridLayout.new(self)
       @players_type_group = create_players_type_group
@@ -27,7 +38,7 @@ module TicTacToe
       @set_up_grid.addWidget(create_play_button,0,2)
 
       @info_label = Qt::Label.new
-      @info_label.objectName = 'info_label'
+      @info_label.objectName = INFO_LABEL_NAME
       @set_up_grid.addWidget(@info_label, 4, 0)
       @ai = Ai::MinimaxAi.new
 
@@ -35,8 +46,8 @@ module TicTacToe
     end
 
     def create_play_button
-      play_button = Qt::PushButton.new('Play')
-      play_button.objectName = 'play_button'
+      play_button = Qt::PushButton.new(PLAY_BUTTON_TEXT)
+      play_button.objectName = PLAY_BUTTON_NAME
       connect(play_button, SIGNAL(:clicked), self, SLOT(:play_new_game))
       play_button
     end
@@ -44,7 +55,7 @@ module TicTacToe
     def add_board
       remove_board unless @grid_board.nil?
       @grid_board = create_board
-      @set_up_grid.addLayout(@grid_board, 1, 0,3,3)
+      @set_up_grid.addLayout(@grid_board, 1, 0, 3, 3)
     end
 
     def remove_board
@@ -63,7 +74,7 @@ module TicTacToe
     def create_board
       @panels = []
       grid_board = Qt::GridLayout.new
-      grid_board.objectName = 'game_board'
+      grid_board.objectName = GAME_BOARD_NAME
       dim = @board_dim
       (0...(dim*dim)).each do |position|
         panel = Qt::PushButton.new((position + 1).to_s)
@@ -99,16 +110,16 @@ module TicTacToe
       options = GameTypes::get_player_options
       radio_buttons = create_radio_buttons(options)
 
-      @players_type_button_group = create_button_group('player_type_b_group', radio_buttons)
-      create_group_box('Game Types', radio_buttons)
+      @players_type_button_group = create_button_group(PLAYER_TYPE_BUTTON_GROUP_NAME, radio_buttons)
+      create_group_box(GAME_TYPES_TEXT, radio_buttons)
     end
 
     def create_board_type_group
       options = GameTypes::get_board_options
       radio_buttons = create_radio_buttons(options)
 
-      @board_type_button_group = create_button_group('board_type_b_group', radio_buttons)
-      create_group_box('Board Types', radio_buttons)
+      @board_type_button_group = create_button_group(BOARD_TYPE_BUTTON_GROUP_NAME, radio_buttons)
+      create_group_box(BOARD_TYPES_TEXT, radio_buttons)
     end
 
     def create_group_box(object_name, radio_buttons)
@@ -132,10 +143,14 @@ module TicTacToe
       if @game.game_over?
         @info_label.text = @game.end_game_state
       else
-        @info_label.text = "Turn = Player #{@game.current_player_marker}"
+        @info_label.text = player_turn_message
         next_move = get_player_move
         find_move_button(next_move).click if next_move
       end
+    end
+
+    def player_turn_message
+      "Turn = Player #{@game.current_player_marker}"
     end
 
     def find_move_button(move)
@@ -175,12 +190,12 @@ module TicTacToe
     end
 
     def valid_button_move?(button)
-      button.text != 'X' && button.text != 'O'
+      button.text != Marker::X_MARKER && button.text != Marker::O_MARKER
     end
 
     def colour_button(button)
-      button.setStyleSheet("color: red") if button.text == 'X'
-      button.setStyleSheet("color: blue") if button.text == 'O'
+      button.setStyleSheet(X_MARKER_COLOR) if button.text == Marker::X_MARKER
+      button.setStyleSheet(O_MARKER_COLOR) if button.text == Marker::O_MARKER
     end
   end
 end
