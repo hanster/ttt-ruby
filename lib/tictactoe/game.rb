@@ -17,7 +17,7 @@ module TicTacToe
 
     def update
       make_player_move(get_player_move)
-      switch_current_player
+      update_current_player
     end
 
     def draw
@@ -46,18 +46,24 @@ module TicTacToe
       @board.draw?
     end
 
-    def switch_current_player
-      @current_player = @current_player == @players[PLAYER_1] ? @players[PLAYER_2] : @players[PLAYER_1]
+    def update_current_player
+      @current_player = @board.number_of_moves_made.even? ? @players[PLAYER_1] : @players[PLAYER_2]
+    end
+    
+    def end_game_state
+      @board.game_over_message
     end
 
-    private
+    def current_player_marker
+      @current_player.marker
+    end
 
     def get_player_move
       @current_player.next_move(@board)
     end
 
     def make_player_move(move)
-      @board = @board.move(move, @current_player.marker)
+      @board = @board.move(move, @current_player.marker) if move
     end
   end
 end

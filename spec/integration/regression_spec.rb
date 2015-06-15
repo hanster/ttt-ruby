@@ -22,7 +22,7 @@ describe 'check full games end in draw with minimax' do
   it 'draws in a previously winning game setup' do
     board = TicTacToe::BoardHelper.create_initial_board_four('-OX-O-----X----X')
     game = TicTacToe::Game.new(board, players, ui)
-    game.switch_current_player
+    game.update_current_player
     game.run
     expect(game.draw?).to be true
   end
@@ -30,7 +30,7 @@ describe 'check full games end in draw with minimax' do
   it 'draws in a previously winning game setup 2' do
     board = TicTacToe::BoardHelper.create_initial_board_four('O--X----O--X--X-')
     game = TicTacToe::Game.new(board, players, ui)
-    game.switch_current_player
+    game.update_current_player
     game.run
     expect(game.draw?).to be true
   end

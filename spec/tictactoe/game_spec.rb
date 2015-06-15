@@ -93,8 +93,8 @@ module TicTacToe
     end
 
     def next_move(board)
-      board.available_moves.sample
       @next_move_times_called += 1
+      board.available_moves.sample
     end
   end
 end

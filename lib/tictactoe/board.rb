@@ -114,6 +114,10 @@ module TicTacToe
       @win_case_calculator.diagonal_wins
     end
 
+    def number_of_moves_made
+      positions.length - available_moves.length
+    end
+
     private
 
     attr_accessor :positions, :turn

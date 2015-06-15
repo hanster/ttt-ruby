@@ -1,5 +1,5 @@
 require 'Qt'
-require 'tictactoe/gui_game'
+require 'tictactoe/game'
 require 'tictactoe/marker'
 require 'tictactoe/factory/players_factory'
 require 'tictactoe/factory/board_factory'
@@ -92,13 +92,13 @@ module TicTacToe
       set_up_board_dim
       add_board
       set_up_players
-      @game = GuiGame.new(@board, @players)
+      @game = Game.new(@board, @players)
       update_game
     end
 
     def set_up_players
       players_selection = @players_type_button_group.checkedButton.text
-      @players = Factory::PlayersFactory.new(nil, @ai).create_from_string(players_selection)
+      @players = Factory::PlayersFactory.new(Gui.new, @ai).create_from_string(players_selection)
     end
 
     def set_up_board_dim
@@ -176,27 +176,35 @@ module TicTacToe
     end
 
     def clicked
+      return if cannot_make_move(sender)
       make_move(sender)
-    end
-
-    def make_move(button)
-      return if @game.game_over?
-      if valid_button_move?(button)
-        @game.make_player_move(button.text.to_i - 1)
-        button.text = @game.current_player_marker
-        colour_button(button)
-        @game.switch_current_player
-      end
       update_game
     end
 
-    def valid_button_move?(button)
-      button.text != Marker::X_MARKER && button.text != Marker::O_MARKER
+    def cannot_make_move(sender)
+      @game.game_over? || invalid_button_move?(sender)
+    end
+
+    def make_move(sender)
+      @game.make_player_move(sender.text.to_i - 1)
+      sender.text = @game.current_player_marker
+      colour_button(sender)
+      @game.update_current_player
+    end
+
+    def invalid_button_move?(button)
+      button.text == Marker::X_MARKER || button.text == Marker::O_MARKER
     end
 
     def colour_button(button)
       button.setStyleSheet(X_MARKER_COLOR) if button.text == Marker::X_MARKER
       button.setStyleSheet(O_MARKER_COLOR) if button.text == Marker::O_MARKER
+    end
+  end
+
+  class Gui
+    def prompt_for_move(board, marker)
+
     end
   end
 end
