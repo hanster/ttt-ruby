@@ -25,10 +25,19 @@ module TicTacToe
 
     def initialize
       super(nil)
-      @grid_board = nil
       setObjectName(TICTACTOE)
       setWindowTitle(TICTACTOE)
       resize(600, 600)
+      @ai = Ai::MinimaxAi.new
+      @ui = Gui.new
+      build_gui_objects
+
+      show
+    end
+
+    def build_gui_objects
+      @grid_board = nil
+      @gui_builder = GuiBuilder.new(self)
       @set_up_grid = Qt::GridLayout.new(self)
       @players_type_group = create_players_type_group
       @set_up_grid.addWidget(@players_type_group,0,0)
@@ -41,16 +50,10 @@ module TicTacToe
       @info_label = Qt::Label.new
       @info_label.objectName = INFO_LABEL_NAME
       @set_up_grid.addWidget(@info_label, 4, 0)
-      @ai = Ai::MinimaxAi.new
-
-      show
     end
 
     def create_play_button
-      play_button = Qt::PushButton.new(PLAY_BUTTON_TEXT)
-      play_button.objectName = PLAY_BUTTON_NAME
-      connect(play_button, SIGNAL(:clicked), self, SLOT(:play_new_game))
-      play_button
+      @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
     end
 
     def add_board
@@ -78,14 +81,19 @@ module TicTacToe
       grid_board.objectName = GAME_BOARD_NAME
       dim = @board_dim
       (0...(dim*dim)).each do |position|
-        panel = Qt::PushButton.new((position + 1).to_s)
-        panel.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
-        row, col = position.divmod(dim)
-        connect(panel, SIGNAL(:clicked), self, SLOT(:clicked))
-        grid_board.addWidget(panel, row, col)
+        panel = create_panel(position, dim, grid_board)
         @panels << panel
       end
       grid_board
+    end
+
+    def create_panel(position, dim, grid_board)
+      panel = Qt::PushButton.new((position + 1).to_s)
+      panel.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
+      row, col = position.divmod(dim)
+      connect(panel, SIGNAL(:clicked), self, SLOT(:clicked))
+      grid_board.addWidget(panel, row, col)
+      panel
     end
 
     def play_new_game
@@ -98,7 +106,7 @@ module TicTacToe
 
     def set_up_players
       players_selection = @players_type_button_group.checkedButton.text
-      @players = Factory::PlayersFactory.new(Gui.new, @ai).create_from_string(players_selection)
+      @players = Factory::PlayersFactory.new(@ui, @ai).create_from_string(players_selection)
     end
 
     def set_up_board_dim
@@ -109,7 +117,7 @@ module TicTacToe
 
     def create_players_type_group
       options = GameTypes::get_player_options
-      radio_buttons = create_radio_buttons(options)
+      radio_buttons = @gui_builder.create_radio_buttons(options)
 
       @players_type_button_group = create_button_group(PLAYER_TYPE_BUTTON_GROUP_NAME, radio_buttons)
       create_group_box(GAME_TYPES_TEXT, radio_buttons)
@@ -117,27 +125,14 @@ module TicTacToe
 
     def create_board_type_group
       options = GameTypes::get_board_options
-      radio_buttons = create_radio_buttons(options)
+      radio_buttons = @gui_builder.create_radio_buttons(options)
 
       @board_type_button_group = create_button_group(BOARD_TYPE_BUTTON_GROUP_NAME, radio_buttons)
       create_group_box(BOARD_TYPES_TEXT, radio_buttons)
     end
 
     def create_group_box(object_name, radio_buttons)
-      group = Qt::GroupBox.new(object_name, self)
-      layout = Qt::VBoxLayout.new(group)
-      radio_buttons.each do |radio_button|
-        layout.addWidget(radio_button)
-      end
-      group
-    end
-
-    def create_radio_buttons(options)
-      options.reduce([]) do |radio_buttons, option|
-        radio_button = Qt::RadioButton.new(option, self)
-        radio_button.objectName = option
-        radio_buttons << radio_button
-      end
+      @gui_builder.create_group_box(object_name, radio_buttons)
     end
 
     def update_game
@@ -165,14 +160,7 @@ module TicTacToe
     end
 
     def create_button_group(name, buttons)
-      button_group = Qt::ButtonGroup.new(self)
-      button_group.objectName = name
-      buttons.each do |button|
-        button_group.addButton(button)
-      end
-      default_button = button_group.buttons.first
-      default_button.setChecked(true)
-      button_group
+      @gui_builder.create_button_group(name, buttons)
     end
 
     def clicked
@@ -202,8 +190,61 @@ module TicTacToe
     end
   end
 
+  class GuiBuilder
+    def initialize(parent)
+      @parent = parent
+    end
+
+    def create_radio_buttons(options)
+      options.reduce([]) do |radio_buttons, option|
+        radio_button = Qt::RadioButton.new(option, @parent)
+        radio_button.objectName = option
+        radio_buttons << radio_button
+      end
+    end
+
+    def create_button_group(name, buttons)
+      button_group = Qt::ButtonGroup.new(@parent)
+      button_group.objectName = name
+      buttons.each do |button|
+        button_group.addButton(button)
+      end
+      default_button = button_group.buttons.first
+      default_button.setChecked(true)
+      button_group
+    end
+
+    def create_group_box(object_name, radio_buttons)
+      group = Qt::GroupBox.new(object_name, @parent)
+      layout = Qt::VBoxLayout.new(group)
+      radio_buttons.each do |radio_button|
+        layout.addWidget(radio_button)
+      end
+      group
+    end
+
+    def create_button(object_name, text, callback)
+      button = Qt::PushButton.new(text)
+      button.objectName = object_name
+      @parent.connect(button, SIGNAL(:clicked), @parent, SLOT(callback))
+      button
+    end
+  end
+
   class Gui
     def prompt_for_move(board, marker)
+
+    end
+
+    def clear_screen
+
+    end
+
+    def draw_board(board)
+
+    end
+
+    def display_message(message)
 
     end
   end
