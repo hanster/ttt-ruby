@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/ui/console_ui'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/factory/players_factory'

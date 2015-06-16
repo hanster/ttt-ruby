@@ -5,6 +5,7 @@ require 'tictactoe/factory/players_factory'
 require 'tictactoe/factory/board_factory'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/game_types'
+require 'tictactoe/ui/gui_builder'
 
 module TicTacToe
   class QtGame < Qt::Widget
@@ -37,10 +38,10 @@ module TicTacToe
 
     def build_gui_objects
       @grid_board = nil
-      @gui_builder = GuiBuilder.new(self)
+      @gui_builder = Ui::GuiBuilder.new(self)
       @set_up_grid = Qt::GridLayout.new(self)
-      @players_type_group = create_players_type_group
-      @set_up_grid.addWidget(@players_type_group,0,0)
+      players_type_group = create_players_type_group
+      @set_up_grid.addWidget(players_type_group,0,0)
 
       @board_type_group = create_board_type_group
       @set_up_grid.addWidget(@board_type_group,0,1)
@@ -187,47 +188,6 @@ module TicTacToe
     def colour_button(button)
       button.setStyleSheet(X_MARKER_COLOR) if button.text == Marker::X_MARKER
       button.setStyleSheet(O_MARKER_COLOR) if button.text == Marker::O_MARKER
-    end
-  end
-
-  class GuiBuilder
-    def initialize(parent)
-      @parent = parent
-    end
-
-    def create_radio_buttons(options)
-      options.reduce([]) do |radio_buttons, option|
-        radio_button = Qt::RadioButton.new(option, @parent)
-        radio_button.objectName = option
-        radio_buttons << radio_button
-      end
-    end
-
-    def create_button_group(name, buttons)
-      button_group = Qt::ButtonGroup.new(@parent)
-      button_group.objectName = name
-      buttons.each do |button|
-        button_group.addButton(button)
-      end
-      default_button = button_group.buttons.first
-      default_button.setChecked(true)
-      button_group
-    end
-
-    def create_group_box(object_name, radio_buttons)
-      group = Qt::GroupBox.new(object_name, @parent)
-      layout = Qt::VBoxLayout.new(group)
-      radio_buttons.each do |radio_button|
-        layout.addWidget(radio_button)
-      end
-      group
-    end
-
-    def create_button(object_name, text, callback)
-      button = Qt::PushButton.new(text)
-      button.objectName = object_name
-      @parent.connect(button, SIGNAL(:clicked), @parent, SLOT(callback))
-      button
     end
   end
 

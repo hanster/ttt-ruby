@@ -26,7 +26,7 @@ module TicTacToe
     end
     
     it 'creates an array of radio buttons from an array of strings' do
-      gui_builder = GuiBuilder.new(window)
+      gui_builder = Ui::GuiBuilder.new(window)
       radio_buttons = gui_builder.create_radio_buttons(options)
       expect(radio_buttons.size).to be 3
       radio_buttons.each do |radio_button|
