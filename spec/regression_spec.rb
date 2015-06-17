@@ -5,8 +5,8 @@ require 'tictactoe/game'
 require 'tictactoe/board'
 require 'tictactoe/board_helper'
 
-describe 'check full games end in draw with minimax' do
-  let(:ui) { TicTacToe::Ui::ConsoleUi.new }
+describe 'check full games end in draw with minimax', :slow => true do
+  let(:ui) { TicTacToe::Fakes::UiMock.new }
   let(:ai) { TicTacToe::Ai::MinimaxAi.new }
   let(:player_factory) { TicTacToe::Factory::PlayersFactory.new(ui, ai) }
   let(:players) { player_factory.create(TicTacToe::Factory::PlayersFactory::CVC_GAME_TYPE) }
