@@ -44,15 +44,12 @@ module TicTacToe
       @board_menu = MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
 
       @info_label = @gui_builder.create_label
+      play_button = @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
       @set_up_grid = Qt::GridLayout.new(self)
       @set_up_grid.addWidget(@players_menu.group_box, 0, 0)
       @set_up_grid.addWidget(@board_menu.group_box, 0, 1)
-      @set_up_grid.addWidget(create_play_button, 0, 2)
+      @set_up_grid.addWidget(play_button, 0, 2)
       @set_up_grid.addWidget(@info_label, 4, 0)
-    end
-
-    def create_play_button
-      @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
     end
 
     def add_board
