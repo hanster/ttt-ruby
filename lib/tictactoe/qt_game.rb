@@ -6,6 +6,7 @@ require 'tictactoe/factory/board_factory'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/game_types'
 require 'tictactoe/ui/gui_builder'
+require 'tictactoe/ui/menu_group'
 
 module TicTacToe
   class QtGame < Qt::Widget
@@ -40,8 +41,8 @@ module TicTacToe
       @grid_board = nil
       @gui_builder = Ui::GuiBuilder.new(self)
       
-      @players_menu = MenuGroup.new(GAME_TYPES_TEXT, GameTypes::get_player_options)
-      @board_menu = MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
+      @players_menu = Ui::MenuGroup.new(GAME_TYPES_TEXT, GameTypes::get_player_options)
+      @board_menu = Ui::MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
 
       @info_label = @gui_builder.create_label
       play_button = @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
@@ -52,9 +53,9 @@ module TicTacToe
       @set_up_grid.addWidget(@info_label, 4, 0)
     end
 
-    def add_board
+    def add_board(board_dim)
       remove_board unless @grid_board.nil?
-      @grid_board = create_board
+      @grid_board = create_board(board_dim)
       @set_up_grid.addLayout(@grid_board, 1, 0, 3, 3)
     end
 
@@ -71,11 +72,11 @@ module TicTacToe
       end
     end
 
-    def create_board
+    def create_board(board_dim)
       @panels = []
       grid_board = Qt::GridLayout.new
       grid_board.objectName = GAME_BOARD_NAME
-      dim = @board_dim
+      dim = board_dim
       (0...(dim*dim)).each do |position|
         panel = create_panel(position, dim, grid_board)
         @panels << panel
@@ -93,22 +94,21 @@ module TicTacToe
     end
 
     def play_new_game
-      set_up_board_dim
-      add_board
-      set_up_players
-      @game = Game.new(@board, @players, @ui)
+      board = set_up_new_board
+      players = set_up_players
+      add_board(board.dimension)
+      @game = Game.new(board, players, @ui)
       update_game
     end
 
     def set_up_players
       players_selection = @players_menu.selected_option
-      @players = Factory::PlayersFactory.new(@ui, @ai).create_from_string(players_selection)
+      players = Factory::PlayersFactory.new(@ui, @ai).create_from_string(players_selection)
     end
 
-    def set_up_board_dim
+    def set_up_new_board
       board_selection = @board_menu.selected_option
-      @board = Factory::BoardFactory.new.create_from_string(board_selection)
-      @board_dim = @board.dimension
+      Factory::BoardFactory.new.create_from_string(board_selection)
     end
 
     def player_turn_message
@@ -188,52 +188,6 @@ module TicTacToe
         message = WINNER_MESSAGE % end_game_state
       end
       @info_label.text = "Game Over\n\n" + message
-    end
-  end
-
-  class MenuGroup
-    def initialize(group_name, options)
-      radio_buttons = create_radio_buttons(options)
-      @group_box = create_group_box(group_name, radio_buttons)
-      @button_group = create_button_group(group_name, radio_buttons)
-    end
-
-    def group_box
-      @group_box
-    end
-
-    def selected_option
-      @button_group.checkedButton.text
-    end
-
-    private
-
-    def create_radio_buttons(options)
-      options.reduce([]) do |radio_buttons, option|
-        radio_button = Qt::RadioButton.new(option)
-        radio_button.objectName = option
-        radio_buttons << radio_button
-      end
-    end
-
-    def create_button_group(name, buttons)
-      button_group = Qt::ButtonGroup.new
-      button_group.objectName = name
-      buttons.each do |button|
-        button_group.addButton(button)
-      end
-      default_button = button_group.buttons.first
-      default_button.setChecked(true)
-      button_group
-    end
-
-    def create_group_box(object_name, radio_buttons)
-      group = Qt::GroupBox.new(object_name)
-      layout = Qt::VBoxLayout.new(group)
-      radio_buttons.each do |radio_button|
-        layout.addWidget(radio_button)
-      end
-      group
     end
   end
 end
