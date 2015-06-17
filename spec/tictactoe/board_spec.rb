@@ -42,10 +42,10 @@ module TicTacToe
     end
 
     it 'returns the markers at positions' do
-       board = initial_board('XXXOOO---')
-       expect(board.marker_at_position(0)).to eq(Marker::X_MARKER)
-       expect(board.marker_at_position(3)).to eq(Marker::O_MARKER)
-       expect(board.marker_at_position(6)).to eq(Marker::EMPTY_MARKER)
+      board = initial_board('XXXOOO---')
+      expect(board.marker_at_position(0)).to eq(Marker::X_MARKER)
+      expect(board.marker_at_position(3)).to eq(Marker::O_MARKER)
+      expect(board.marker_at_position(6)).to eq(Marker::EMPTY_MARKER)
     end
 
     it "returns the all available positions" do
@@ -114,26 +114,9 @@ module TicTacToe
       expect(board.positions_representation).to eq([0, 1, 2, 'X', 'X', 'X', 'X', 'X', 'X'])
     end
 
-    describe "#game_over_message#" do
-      it "returns X wins message" do
-        board = initial_board('XXX------')
-        expect(board.game_over_message).to eq("Game Over\n\n#{x_marker} wins!")
-      end
-
-      it "returns draw message" do
-        board = initial_board('XOXOOXXXO')
-        expect(board.game_over_message).to eq("Game Over\n\nIt's a draw!")
-      end
-
-      it "returns O wins message" do
-        board = initial_board('OOO------')
-        expect(board.game_over_message).to eq("Game Over\n\n#{Marker::O_MARKER} wins!")
-      end
-
-      it "returns true when the board has no winner and no moves" do
-        board = initial_board('XOXOOXXXO')
-        expect(board.draw?).to be true
-      end
+    it "returns true when the board has no winner and no moves" do
+      board = initial_board('XOXOOXXXO')
+      expect(board.draw?).to be true
     end
 
     it 'works out the horizontal win cases' do

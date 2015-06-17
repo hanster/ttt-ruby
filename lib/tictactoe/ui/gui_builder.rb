@@ -3,6 +3,7 @@ require 'Qt'
 module TicTacToe
   module Ui
     class GuiBuilder
+      INFO_LABEL_NAME = 'info_label'
       def initialize(parent)
         @parent = parent
       end
@@ -41,6 +42,14 @@ module TicTacToe
         @parent.connect(button, SIGNAL(:clicked), @parent, SLOT(callback))
         button
       end
+
+      def create_label
+        label = Qt::Label.new
+        label.objectName = INFO_LABEL_NAME
+        label
+      end
+
+
     end
   end
 end

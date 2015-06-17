@@ -23,7 +23,7 @@ module TicTacToe
     def draw
       @display.clear_screen
       @display.draw_board(@board)
-      @display.display_message(@board.game_over_message) if game_over?
+      @display.display_end_game_message(end_game_state) if game_over?
     end
 
     def running?
@@ -51,7 +51,7 @@ module TicTacToe
     end
     
     def end_game_state
-      @board.game_over_message
+      @board.game_over_state
     end
 
     def current_player_marker

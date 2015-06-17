@@ -67,7 +67,7 @@ module TicTacToe
       game = Game.new(board, players, ui)
 
       game.draw
-      expect(ui.display_message_times_called).to eq(1)
+      expect(ui.display_end_game_message_times_called).to eq(1)
     end
 
     it "returns the game is a draw correctly" do

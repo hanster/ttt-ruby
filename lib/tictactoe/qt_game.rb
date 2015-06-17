@@ -12,7 +12,6 @@ module TicTacToe
     X_MARKER_COLOR = "color: red"
     O_MARKER_COLOR = "color: blue"
     TICTACTOE = 'TicTacToe'
-    INFO_LABEL_NAME = 'info_label'
     PLAY_BUTTON_TEXT = 'Play'
     PLAY_BUTTON_NAME = 'play_button'
     GAME_BOARD_NAME = 'game_board'
@@ -32,6 +31,7 @@ module TicTacToe
       @ai = Ai::MinimaxAi.new
       @ui = Gui.new
       build_gui_objects
+      @ui.add_label(@info_label)
 
       show
     end
@@ -39,17 +39,15 @@ module TicTacToe
     def build_gui_objects
       @grid_board = nil
       @gui_builder = Ui::GuiBuilder.new(self)
-      @set_up_grid = Qt::GridLayout.new(self)
+      
       players_type_group = create_players_type_group
+      board_type_group = create_board_type_group
+
+      @info_label = @gui_builder.create_label
+      @set_up_grid = Qt::GridLayout.new(self)
       @set_up_grid.addWidget(players_type_group,0,0)
-
-      @board_type_group = create_board_type_group
-      @set_up_grid.addWidget(@board_type_group,0,1)
-
+      @set_up_grid.addWidget(board_type_group,0,1)
       @set_up_grid.addWidget(create_play_button,0,2)
-
-      @info_label = Qt::Label.new
-      @info_label.objectName = INFO_LABEL_NAME
       @set_up_grid.addWidget(@info_label, 4, 0)
     end
 
@@ -101,7 +99,7 @@ module TicTacToe
       set_up_board_dim
       add_board
       set_up_players
-      @game = Game.new(@board, @players)
+      @game = Game.new(@board, @players, @ui)
       update_game
     end
 
@@ -120,7 +118,7 @@ module TicTacToe
       options = GameTypes::get_player_options
       radio_buttons = @gui_builder.create_radio_buttons(options)
 
-      @players_type_button_group = create_button_group(PLAYER_TYPE_BUTTON_GROUP_NAME, radio_buttons)
+      @players_type_button_group = @gui_builder.create_button_group(PLAYER_TYPE_BUTTON_GROUP_NAME, radio_buttons)
       create_group_box(GAME_TYPES_TEXT, radio_buttons)
     end
 
@@ -128,22 +126,12 @@ module TicTacToe
       options = GameTypes::get_board_options
       radio_buttons = @gui_builder.create_radio_buttons(options)
 
-      @board_type_button_group = create_button_group(BOARD_TYPE_BUTTON_GROUP_NAME, radio_buttons)
+      @board_type_button_group = @gui_builder.create_button_group(BOARD_TYPE_BUTTON_GROUP_NAME, radio_buttons)
       create_group_box(BOARD_TYPES_TEXT, radio_buttons)
     end
 
     def create_group_box(object_name, radio_buttons)
       @gui_builder.create_group_box(object_name, radio_buttons)
-    end
-
-    def update_game
-      if @game.game_over?
-        @info_label.text = @game.end_game_state
-      else
-        @info_label.text = player_turn_message
-        next_move = get_player_move
-        find_move_button(next_move).click if next_move
-      end
     end
 
     def player_turn_message
@@ -160,14 +148,20 @@ module TicTacToe
       @game.get_player_move
     end
 
-    def create_button_group(name, buttons)
-      @gui_builder.create_button_group(name, buttons)
-    end
-
     def clicked
       return if cannot_make_move(sender)
       make_move(sender)
       update_game
+    end
+
+    def update_game
+      if @game.game_over?
+        @game.draw
+      else
+        @info_label.text = player_turn_message
+        next_move = get_player_move
+        find_move_button(next_move).click if next_move
+      end
     end
 
     def cannot_make_move(sender)
@@ -192,6 +186,11 @@ module TicTacToe
   end
 
   class Gui
+    WINNER_MESSAGE = "%s wins!"
+    DRAW_MESSAGE = "It's a draw!"
+    def add_label(info_label)
+      @info_label = info_label
+    end
     def prompt_for_move(board, marker)
 
     end
@@ -204,8 +203,14 @@ module TicTacToe
 
     end
 
-    def display_message(message)
-
+    def display_end_game_message(end_game_state)
+      message = ''
+      if end_game_state == Board::DRAW
+        message = DRAW_MESSAGE
+      else
+        message = WINNER_MESSAGE % end_game_state
+      end
+      @info_label.text = "Game Over\n\n" + message
     end
   end
 end

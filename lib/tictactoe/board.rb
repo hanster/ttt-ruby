@@ -84,17 +84,8 @@ module TicTacToe
       (0...positions.length).to_a
     end
 
-    #ask for winner and display in ui
-    def game_over_message
-      message = ''
-      if (won?(O_MARKER))
-        message = O_MARKER + ' wins!'
-      elsif (won?(X_MARKER))
-        message = X_MARKER + ' wins!'
-      elsif no_more_moves?
-        message = "It's a draw!"
-      end
-      "Game Over\n\n" + message
+    def game_over_state
+      calculate_state
     end
 
     def draw?
