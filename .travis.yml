@@ -1,1 +1,1 @@
-script: bundle exec rake integration
+script: bundle exec rake full
