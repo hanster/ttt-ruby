@@ -100,6 +100,22 @@ module TicTacToe
 
         expect(output.string).to include("Goodbye and Thanks for playing!")
       end
+
+      it "displays the end game message when there is a winner" do
+        input = StringIO.new
+        ui = ConsoleUi.new(input, output)
+        ui.display_end_game_message(Board::X_MARKER)
+
+        expect(output.string).to include("Game Over\n\n" + Board::X_MARKER + " wins!")
+      end
+
+      it "displays the end game message for a draw" do
+        input = StringIO.new
+        ui = ConsoleUi.new(input, output)
+        ui.display_end_game_message(Board::DRAW)
+
+        expect(output.string).to include("Game Over\n\n" + ConsoleUi::DRAW_MESSAGE)
+      end
     end
   end
 end

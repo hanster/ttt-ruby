@@ -15,6 +15,7 @@ module TicTacToe
       VERTICAL_SEP = '|'
       HORIZONTAL_SEP = '-'
       CROSS_JOIN = '+'
+      GAME_OVER_MESSAGE = "Game Over\n\n"
       WINNER_MESSAGE = "%s wins!"
       DRAW_MESSAGE = "It's a draw!"
 
@@ -29,10 +30,11 @@ module TicTacToe
 
       def display_end_game_message(end_game_state)
         if end_game_state == Board::DRAW
-          display_message(DRAW_MESSAGE)
+          message = DRAW_MESSAGE
         else
-          display_message(WINNER_MESSAGE % end_game_state)
+          message = WINNER_MESSAGE % end_game_state
         end
+        display_message(GAME_OVER_MESSAGE + message)
       end
 
       def draw_board(board)

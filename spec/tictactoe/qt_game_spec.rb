@@ -34,12 +34,6 @@ module TicTacToe
       end
     end
 
-    it 'creates a group box from an array of radio buttons' do
-      object_name = 'group_box'
-      group_box = window.create_group_box(object_name, radio_buttons)
-      expect(group_box).to be_kind_of(Qt::GroupBox)
-    end
-
     it 'plays a full computer game' do
       find_widget('Computer vs Computer').click
       find_widget('3x3').click
