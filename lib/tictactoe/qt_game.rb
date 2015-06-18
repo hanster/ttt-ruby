@@ -7,6 +7,7 @@ require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/game_types'
 require 'tictactoe/ui/gui_builder'
 require 'tictactoe/ui/menu_group'
+require 'tictactoe/ui/gui_board'
 
 module TicTacToe
   class QtGame < Qt::Widget
@@ -33,72 +34,37 @@ module TicTacToe
       @ui = Gui.new
       build_gui_objects
       @ui.add_label(@info_label)
-
-      show
     end
 
     def build_gui_objects
-      @grid_board = nil
       @gui_builder = Ui::GuiBuilder.new(self)
-      
+
       @players_menu = Ui::MenuGroup.new(GAME_TYPES_TEXT, GameTypes::get_player_options)
       @board_menu = Ui::MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
+      @gui_board = Ui::GuiBoard.new
+      @gui_board.register_panel_on_click(self, :clicked)
 
       @info_label = @gui_builder.create_label
       play_button = @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
       @set_up_grid = Qt::GridLayout.new(self)
+      @set_up_grid.addLayout(@gui_board, 1, 0, 3, 3)
       @set_up_grid.addWidget(@players_menu.group_box, 0, 0)
       @set_up_grid.addWidget(@board_menu.group_box, 0, 1)
       @set_up_grid.addWidget(play_button, 0, 2)
       @set_up_grid.addWidget(@info_label, 4, 0)
     end
 
-    def add_board(board_dim)
-      remove_board unless @grid_board.nil?
-      @grid_board = create_board(board_dim)
-      @set_up_grid.addLayout(@grid_board, 1, 0, 3, 3)
-    end
-
-    def remove_board
-      clear_panels
-      @set_up_grid.removeItem(@grid_board)
-    end
-
-    def clear_panels
-      @panels.each do |panel|
-        panel.hide
-        @grid_board.removeWidget(panel)
-        panel.dispose
-      end
-    end
-
-    def create_board(board_dim)
-      @panels = []
-      grid_board = Qt::GridLayout.new
-      grid_board.objectName = GAME_BOARD_NAME
-      dim = board_dim
-      (0...(dim*dim)).each do |position|
-        panel = create_panel(position, dim, grid_board)
-        @panels << panel
-      end
-      grid_board
-    end
-
-    def create_panel(position, dim, grid_board)
-      panel = Qt::PushButton.new((position + 1).to_s)
-      panel.setSizePolicy(Qt::SizePolicy::Expanding,Qt::SizePolicy::Expanding)
-      row, col = position.divmod(dim)
-      connect(panel, SIGNAL(:clicked), self, SLOT(:clicked))
-      grid_board.addWidget(panel, row, col)
-      panel
-    end
-
     def play_new_game
+      setup_game
+      update_game
+    end
+
+    def setup_game
       board = set_up_new_board
       players = set_up_players
-      add_board(board.dimension)
+
+      @gui_board.new_board(board.dimension)
       @game = Game.new(board, players, @ui)
-      update_game
     end
 
     def set_up_players
@@ -115,12 +81,6 @@ module TicTacToe
       PLAYER_TURN_TEXT % @game.current_player_marker
     end
 
-    def find_move_button(move)
-      @panels.find do |panel|
-        panel.text == (move + 1).to_s
-      end
-    end
-
     def get_player_move
       @game.get_player_move
     end
@@ -132,12 +92,11 @@ module TicTacToe
     end
 
     def update_game
-      if @game.game_over?
-        @game.draw
-      else
+      @game.draw
+      unless @game.game_over?
         @info_label.text = player_turn_message
         next_move = get_player_move
-        find_move_button(next_move).click if next_move
+        @gui_board.click_panel(next_move) if next_move
       end
     end
 

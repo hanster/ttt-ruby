@@ -23,4 +23,3 @@ module TicTacToe
     end
   end
 end
-
