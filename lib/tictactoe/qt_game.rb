@@ -8,6 +8,7 @@ require 'tictactoe/game_types'
 require 'tictactoe/ui/gui_builder'
 require 'tictactoe/ui/menu_group'
 require 'tictactoe/ui/gui_board'
+require 'tictactoe/ui/graphical_ui'
 
 module TicTacToe
   class QtGame < Qt::Widget
@@ -17,8 +18,6 @@ module TicTacToe
     PLAY_BUTTON_TEXT = 'Play'
     PLAY_BUTTON_NAME = 'play_button'
     GAME_BOARD_NAME = 'game_board'
-    PLAYER_TYPE_BUTTON_GROUP_NAME = 'player_type_b_group'
-    BOARD_TYPE_BUTTON_GROUP_NAME = 'board_type_b_group'
     GAME_TYPES_TEXT = 'Game Types'
     BOARD_TYPES_TEXT = 'Board Types'
     PLAYER_TURN_TEXT = "Turn = Player %s"
@@ -31,7 +30,7 @@ module TicTacToe
       setWindowTitle(TICTACTOE)
       resize(600, 600)
       @ai = Ai::MinimaxAi.new
-      @ui = Gui.new
+      @ui = Ui::GraphicalUi.new
       build_gui_objects
       @ui.add_label(@info_label)
     end
@@ -118,35 +117,6 @@ module TicTacToe
     def colour_button(button)
       button.setStyleSheet(X_MARKER_COLOR) if button.text == Marker::X_MARKER
       button.setStyleSheet(O_MARKER_COLOR) if button.text == Marker::O_MARKER
-    end
-  end
-
-  class Gui
-    WINNER_MESSAGE = "%s wins!"
-    DRAW_MESSAGE = "It's a draw!"
-    def add_label(info_label)
-      @info_label = info_label
-    end
-    def prompt_for_move(board, marker)
-
-    end
-
-    def clear_screen
-
-    end
-
-    def draw_board(board)
-
-    end
-
-    def display_end_game_message(end_game_state)
-      message = ''
-      if end_game_state == Board::DRAW
-        message = DRAW_MESSAGE
-      else
-        message = WINNER_MESSAGE % end_game_state
-      end
-      @info_label.text = "Game Over\n\n" + message
     end
   end
 end
