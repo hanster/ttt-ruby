@@ -9,12 +9,16 @@ module TicTacToe
     DRAW = 'draw'
     ONGOING = 'ongoing'
 
-    def initialize(dim = 3, initial_positions = nil, win_case_calculator = nil)
+    def initialize(dim, initial_positions, win_case_calculator)
       @dimension = dim
-      initial_positions ||= (EMPTY_MARKER * @dimension * @dimension).split('')
       @positions = initial_positions
-      win_case_calculator ||= WinCaseCalculator.new(@dimension)
       @win_case_calculator = win_case_calculator
+    end
+
+    def self.make_board(dim, initial_positions = nil)
+      initial_positions ||= (EMPTY_MARKER * dim * dim).split('')
+      win_case_calculator = WinCaseCalculator.new(dim)
+      Board.new(dim, initial_positions, win_case_calculator)
     end
 
     def calculate_state
@@ -80,17 +84,8 @@ module TicTacToe
       (0...positions.length).to_a
     end
 
-    #ask for winner and display in ui
-    def game_over_message
-      message = ''
-      if (won?(O_MARKER))
-        message = O_MARKER + ' wins!'
-      elsif (won?(X_MARKER))
-        message = X_MARKER + ' wins!'
-      elsif no_more_moves?
-        message = "It's a draw!"
-      end
-      "Game Over\n\n" + message
+    def game_over_state
+      calculate_state
     end
 
     def draw?
@@ -108,6 +103,10 @@ module TicTacToe
 
     def diagonal_wins
       @win_case_calculator.diagonal_wins
+    end
+
+    def number_of_moves_made
+      positions.length - available_moves.length
     end
 
     private

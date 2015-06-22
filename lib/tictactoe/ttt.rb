@@ -1,7 +1,5 @@
 require 'tictactoe/game_setup'
 require 'tictactoe/ui/console_ui'
-require 'tictactoe/player/computer_player'
-require 'tictactoe/ai/minimax_ai'
 
 module TicTacToe
   class TTT

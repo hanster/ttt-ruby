@@ -1,3 +1,4 @@
+require 'tictactoe/board'
 require 'tictactoe/ui/input_move'
 require 'tictactoe/ui/input_board'
 require 'tictactoe/ui/input_new_game'
@@ -14,6 +15,9 @@ module TicTacToe
       VERTICAL_SEP = '|'
       HORIZONTAL_SEP = '-'
       CROSS_JOIN = '+'
+      GAME_OVER_MESSAGE = "Game Over\n\n"
+      WINNER_MESSAGE = "%s wins!"
+      DRAW_MESSAGE = "It's a draw!"
 
       def initialize(input = STDIN, output = STDOUT)
         @input = input
@@ -22,6 +26,15 @@ module TicTacToe
 
       def display_message(message)
         @output.puts message
+      end
+
+      def display_end_game_message(end_game_state)
+        if end_game_state == Board::DRAW
+          message = DRAW_MESSAGE
+        else
+          message = WINNER_MESSAGE % end_game_state
+        end
+        display_message(GAME_OVER_MESSAGE + message)
       end
 
       def draw_board(board)

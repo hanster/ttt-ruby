@@ -8,7 +8,7 @@ module TicTacToe
     include Marker
 
     describe HumanPlayer do
-      let(:board) { Board.new }
+      let(:board) { Board.make_board(3) }
       let(:ui) { MockUi.new }
       let(:player) { HumanPlayer.new(ui, X_MARKER) }
       it "takes in a UI class and the players marker (X, or O) on initialization" do

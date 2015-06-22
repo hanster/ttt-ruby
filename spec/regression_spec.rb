@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'tictactoe/ui/console_ui'
 require 'tictactoe/ai/minimax_ai'
 require 'tictactoe/factory/players_factory'
@@ -13,32 +14,32 @@ describe 'check full games end in draw with minimax', :slow => true do
 
   it 'plays 50 games and all end in a draw' do
     50.times do |i|
-      game = TicTacToe::Game.new(TicTacToe::Board.new(4), players, ui)
+      game = TicTacToe::Game.new(TicTacToe::Board.make_board(4), players, ui)
       game.run
-      expect(game.draw?).to be true
+      expect(game.end_game_state).to eq(TicTacToe::Board::DRAW)
     end
   end
 
   it 'draws in a previously winning game setup' do
     board = TicTacToe::BoardHelper.create_initial_board_four('-OX-O-----X----X')
     game = TicTacToe::Game.new(board, players, ui)
-    game.switch_current_player
+    game.update_current_player
     game.run
-    expect(game.draw?).to be true
+    expect(game.end_game_state).to eq(TicTacToe::Board::DRAW)
   end
 
   it 'draws in a previously winning game setup 2' do
     board = TicTacToe::BoardHelper.create_initial_board_four('O--X----O--X--X-')
     game = TicTacToe::Game.new(board, players, ui)
-    game.switch_current_player
+    game.update_current_player
     game.run
-    expect(game.draw?).to be true
+    expect(game.end_game_state).to eq(TicTacToe::Board::DRAW)
   end
 
   it 'plays a C v C game to a draw' do
-    game = TicTacToe::Game.new(TicTacToe::Board.new(4), players, ui)
+    game = TicTacToe::Game.new(TicTacToe::Board.make_board(4), players, ui)
     game.run
-    expect(game.draw?).to be true
+    expect(game.end_game_state).to eq(TicTacToe::Board::DRAW)
   end
 end
 

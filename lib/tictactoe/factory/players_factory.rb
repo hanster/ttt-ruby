@@ -28,6 +28,11 @@ module TicTacToe
         end
       end
 
+      def create_from_string(player_type)
+        player_type_code = PLAYER_OPTIONS.key(player_type)
+        create(player_type_code)
+      end
+
       private
 
       def computer(marker)

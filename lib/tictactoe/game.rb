@@ -3,7 +3,6 @@ require 'tictactoe/ui/console_ui'
 module TicTacToe
   class Game
     PLAYER_1 = 0
-
     PLAYER_2 = 1
 
     attr_reader :players
@@ -17,14 +16,14 @@ module TicTacToe
     end
 
     def update
-      make_player_move
-      switch_current_player
+      make_player_move(get_player_move)
+      update_current_player
     end
 
     def draw
       @display.clear_screen
       @display.draw_board(@board)
-      @display.display_message(@board.game_over_message) if game_over?
+      @display.display_end_game_message(end_game_state) if game_over?
     end
 
     def running?
@@ -43,19 +42,24 @@ module TicTacToe
       end
     end
 
-    def draw?
-      @board.draw?
+    def update_current_player
+      @current_player = @board.number_of_moves_made.even? ? @players[PLAYER_1] : @players[PLAYER_2]
+    end
+    
+    def end_game_state
+      @board.game_over_state
     end
 
-    def switch_current_player
-      @current_player = @current_player == @players[PLAYER_1] ? @players[PLAYER_2] : @players[PLAYER_1]
+    def current_player_marker
+      @current_player.marker
     end
 
-    private
+    def get_player_move
+      @current_player.next_move(@board)
+    end
 
-    def make_player_move
-      move = @current_player.next_move(@board)
-      @board = @board.move(move, @current_player.marker)
+    def make_player_move(move)
+      @board = @board.move(move, @current_player.marker) if move
     end
   end
 end

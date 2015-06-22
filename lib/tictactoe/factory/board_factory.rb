@@ -1,23 +1,27 @@
 require 'tictactoe/board'
+require 'tictactoe/game_types'
 
 module TicTacToe
   module Factory
     class BoardFactory
-      TWO_BOARD = 1
-      THREE_BOARD = 2
-      FOUR_BOARD = 3
+      include GameTypes
 
       def create(board_type)
         case board_type
         when TWO_BOARD
-          return Board.new(2)
+          return Board.make_board(2)
         when THREE_BOARD
-          return Board.new(3)
+          return Board.make_board(3)
         when FOUR_BOARD
-          return Board.new(4)
+          return Board.make_board(4)
         else
-          return Board.new
+          return Board.make_board(3)
         end
+      end
+
+      def create_from_string(board_type_string)
+        board_type_code = BOARD_OPTIONS.key(board_type_string)
+        create(board_type_code)
       end
     end
   end

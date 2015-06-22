@@ -4,6 +4,7 @@ module TicTacToe
       attr_reader :draw_board_times_called,
         :clear_screen_times_called,
         :display_message_times_called,
+        :display_end_game_message_times_called,
         :prompt_play_again_times_called,
         :prompt_good_bye_times_called,
         :prompt_game_type_times_called
@@ -13,6 +14,7 @@ module TicTacToe
         @draw_board_times_called = 0
         @clear_screen_times_called = 0
         @display_message_times_called = 0
+        @display_end_game_message_times_called = 0
         @prompt_play_again_times_called = 0
         @prompt_good_bye_times_called = 0
         @prompt_game_type_times_called = 0
@@ -29,6 +31,10 @@ module TicTacToe
 
       def display_message(message)
         @display_message_times_called += 1
+      end
+
+      def display_end_game_message(message)
+        @display_end_game_message_times_called += 1
       end
 
       def prompt_board_type(options)
