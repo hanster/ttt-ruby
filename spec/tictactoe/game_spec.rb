@@ -74,7 +74,7 @@ module TicTacToe
       board = initial_board('OXOOXOXOX')
       game = Game.new(board, players, ui)
 
-      expect(game.draw?).to be true
+      expect(game.end_game_state).to eq(Board::DRAW)
     end
 
     it "exits the run method once the game is over" do

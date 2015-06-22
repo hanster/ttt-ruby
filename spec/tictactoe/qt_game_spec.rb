@@ -9,8 +9,6 @@ module TicTacToe
     end
 
     let(:window) { QtGame.new }
-    let(:options) { ['radio1', 'radio2', 'radio3'] }
-    let(:radio_buttons) { [Qt::RadioButton.new('radio_b1'), Qt::RadioButton.new('radio_b2')] }
 
     it 'is a window' do
       expect(window).to be_kind_of(Qt::Widget)
@@ -30,6 +28,13 @@ module TicTacToe
       find_widget('3x3').click
       find_widget('play_button').click
       expect(find_widget('info_label').text).to eq("Game Over\n\nIt's a draw!")
+    end
+
+    it 'plays a 2x2 computer game which will end in an X win' do
+      find_widget('Computer vs Computer').click
+      find_widget('2x2').click
+      find_widget('play_button').click
+      expect(find_widget('info_label').text).to eq("Game Over\n\nX wins!")
     end
 
     it 'displays the correct player turn text' do

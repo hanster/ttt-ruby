@@ -42,10 +42,6 @@ module TicTacToe
       end
     end
 
-    def draw?
-      @board.draw?
-    end
-
     def update_current_player
       @current_player = @board.number_of_moves_made.even? ? @players[PLAYER_1] : @players[PLAYER_2]
     end

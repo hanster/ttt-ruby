@@ -8,8 +8,6 @@ require 'tictactoe/ui/graphical_ui'
 
 module TicTacToe
   class QtGame < Qt::Widget
-    X_MARKER_COLOR = "color: red"
-    O_MARKER_COLOR = "color: blue"
     TICTACTOE = 'TicTacToe'
     GAME_BOARD_NAME = 'game_board'
     GAME_TYPES_TEXT = 'Game Types'
@@ -65,12 +63,12 @@ module TicTacToe
     end
 
     def update_game
-      @game.draw
       unless @game.game_over?
         @ui.set_info_label(player_turn_message)
         next_move = get_player_move
         @ui.click_board_panel(next_move) if next_move
       end
+      @game.draw
     end
 
     def cannot_make_move(sender)
@@ -79,18 +77,11 @@ module TicTacToe
 
     def make_move(sender)
       @game.make_player_move(sender.text.to_i - 1)
-      sender.text = @game.current_player_marker
-      colour_button(sender)
       @game.update_current_player
     end
 
     def invalid_button_move?(button)
       button.text == Marker::X_MARKER || button.text == Marker::O_MARKER
-    end
-
-    def colour_button(button)
-      button.setStyleSheet(X_MARKER_COLOR) if button.text == Marker::X_MARKER
-      button.setStyleSheet(O_MARKER_COLOR) if button.text == Marker::O_MARKER
     end
   end
 end

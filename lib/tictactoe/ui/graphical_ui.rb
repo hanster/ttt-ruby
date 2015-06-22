@@ -18,24 +18,6 @@ module TicTacToe
         build_gui_objects
       end
 
-      def build_gui_objects
-        @gui_builder = GuiBuilder.new(@parent)
-
-        @players_menu = Ui::MenuGroup.new(GAME_TYPES_TEXT, GameTypes::get_player_options)
-        @board_menu = Ui::MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
-        @gui_board = Ui::GuiBoard.new
-        @gui_board.register_panel_on_click(@parent, :clicked)
-
-        @info_label = @gui_builder.create_label
-        play_button = @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
-        set_up_grid = Qt::GridLayout.new(@parent)
-        set_up_grid.addLayout(@gui_board, 1, 0, 3, 3)
-        set_up_grid.addWidget(@players_menu.group_box, 0, 0)
-        set_up_grid.addWidget(@board_menu.group_box, 0, 1)
-        set_up_grid.addWidget(play_button, 0, 2)
-        set_up_grid.addWidget(@info_label, 4, 0)
-      end
-
       def get_players_selection
         @players_menu.selected_option
       end
@@ -65,7 +47,7 @@ module TicTacToe
       end
 
       def draw_board(board)
-
+        @gui_board.update(board)
       end
 
       def display_end_game_message(end_game_state)
@@ -76,6 +58,26 @@ module TicTacToe
           message = WINNER_MESSAGE % end_game_state
         end
         @info_label.text = "Game Over\n\n" + message
+      end
+
+      private
+
+      def build_gui_objects
+        @gui_builder = GuiBuilder.new(@parent)
+
+        @players_menu = Ui::MenuGroup.new(GAME_TYPES_TEXT, GameTypes::get_player_options)
+        @board_menu = Ui::MenuGroup.new(BOARD_TYPES_TEXT, GameTypes::get_board_options)
+        @gui_board = Ui::GuiBoard.new
+        @gui_board.register_panel_on_click(@parent, :clicked)
+
+        @info_label = @gui_builder.create_label
+        play_button = @gui_builder.create_button(PLAY_BUTTON_NAME, PLAY_BUTTON_TEXT, :play_new_game)
+        set_up_grid = Qt::GridLayout.new(@parent)
+        set_up_grid.addLayout(@gui_board, 1, 0, 3, 3)
+        set_up_grid.addWidget(@players_menu.group_box, 0, 0)
+        set_up_grid.addWidget(@board_menu.group_box, 0, 1)
+        set_up_grid.addWidget(play_button, 0, 2)
+        set_up_grid.addWidget(@info_label, 4, 0)
       end
     end
   end
